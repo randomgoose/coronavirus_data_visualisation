@@ -4,12 +4,11 @@ import { Scene } from 'three'
 import * as THREE from 'three'
 
 function Box(props) {
-  console.log(props)
   // This reference will give us direct access to the mesh
   const mesh = useRef()
   const virtualScene = useMemo(() => new Scene(), [])
+  const [canvas, setCanvas] = useState(props.canvas)
   
-
   let {
     gl,                           // WebGL renderer
     scene,                        // Default scene
@@ -25,20 +24,18 @@ function Box(props) {
   } = useThree()
 
   const virtualCam = camera
-  const canvas = document.getElementById('real')
-  gl = new THREE.WebGLRenderer({
-    canvas
-  })
+
+  // if (props.canvas != null){
+  //   gl = new THREE.WebGLRenderer({
+  //     canvas
+  //   })
+  // }
   
   // Rotate mesh every frame, this is outside of React without overhead
   useFrame(() => {
     gl.render(virtualScene, virtualCam)
     mesh.current.rotation.x = mesh.current.rotation.y += 0.01
   }, 2)
-
-  // console.log()
-  // gl = null
-  // gl.setSize(720, 720)
   
   return createPortal(
       <>
