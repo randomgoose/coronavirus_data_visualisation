@@ -5,7 +5,8 @@
       "id": 0,
       "properties": {
         "GEO_ID": 23,
-        "NAME": "黑龙江"
+        "NAME": "黑龙江",
+        "PROVINCE": "Heilongjiang"
       },
       "geometry": {
         "type": "Polygon",
@@ -1227,7 +1228,8 @@
       "id": 1,
       "properties": {
         "GEO_ID": 65,
-        "NAME": "新疆"
+        "NAME": "新疆",
+        "PROVINCE": "Xinjiang"
       },
       "geometry": {
         "type": "Polygon",
@@ -2696,7 +2698,8 @@
       "id": 2,
       "properties": {
         "GEO_ID": 14,
-        "NAME": "山西"
+        "NAME": "山西",
+        "PROVINCE": "Shanxi"
       },
       "geometry": {
         "type": "Polygon",
@@ -3232,7 +3235,8 @@
       "id": 3,
       "properties": {
         "GEO_ID": 64,
-        "NAME": "宁夏"
+        "NAME": "宁夏",
+        "PROVINCE": "Ningxia"
       },
       "geometry": {
         "type": "Polygon",
@@ -3542,7 +3546,8 @@
       "id": 4,
       "properties": {
         "GEO_ID": 54,
-        "NAME": "西藏"
+        "NAME": "西藏",
+        "PROVINCE": "Tibet"
       },
       "geometry": {
         "type": "Polygon",
@@ -5015,7 +5020,8 @@
       "id": 5,
       "properties": {
         "GEO_ID": 37,
-        "NAME": "山东"
+        "NAME": "山东",
+        "PROVINCE": "Shandong"
       },
       "geometry": {
         "type": "Polygon",
@@ -6239,7 +6245,8 @@
       "id": 6,
       "properties": {
         "GEO_ID": 41,
-        "NAME": "河南"
+        "NAME": "河南",
+        "PROVINCE": "Henan"
       },
       "geometry": {
         "type": "Polygon",
@@ -6953,7 +6960,8 @@
       "id": 7,
       "properties": {
         "GEO_ID": 32,
-        "NAME": "江苏"
+        "NAME": "江苏",
+        "PROVINCE": "Jiangsu"
       },
       "geometry": {
         "type": "Polygon",
@@ -7753,7 +7761,8 @@
       "id": 8,
       "properties": {
         "GEO_ID": 34,
-        "NAME": "安徽"
+        "NAME": "安徽",
+        "PROVINCE": "Anhui"
       },
       "geometry": {
         "type": "Polygon",
@@ -8478,7 +8487,8 @@
       "id": 9,
       "properties": {
         "GEO_ID": 42,
-        "NAME": "湖北"
+        "NAME": "湖北",
+        "PROVINCE": "Hubei"
       },
       "geometry": {
         "type": "Polygon",
@@ -9250,7 +9260,8 @@
       "id": 10,
       "properties": {
         "GEO_ID": 33,
-        "NAME": "浙江"
+        "NAME": "浙江",
+        "PROVINCE": "Zhejiang"
       },
       "geometry": {
         "type": "Polygon",
@@ -10099,7 +10110,8 @@
       "id": 11,
       "properties": {
         "GEO_ID": 36,
-        "NAME": "江西"
+        "NAME": "江西",
+        "PROVINCE": "Jiangxi"
       },
       "geometry": {
         "type": "Polygon",
@@ -10827,7 +10839,8 @@
       "id": 12,
       "properties": {
         "GEO_ID": 43,
-        "NAME": "湖南"
+        "NAME": "湖南",
+        "PROVINCE": "Hunan"
       },
       "geometry": {
         "type": "Polygon",
@@ -11613,7 +11626,8 @@
       "id": 13,
       "properties": {
         "GEO_ID": 53,
-        "NAME": "云南"
+        "NAME": "云南",
+        "PROVINCE": "Yunnan"
       },
       "geometry": {
         "type": "Polygon",
@@ -12892,7 +12906,8 @@
       "id": 14,
       "properties": {
         "GEO_ID": 52,
-        "NAME": "贵州"
+        "NAME": "贵州",
+        "PROVINCE": "Guizhou"
       },
       "geometry": {
         "type": "Polygon",
@@ -13554,7 +13569,8 @@
       "id": 15,
       "properties": {
         "GEO_ID": 35,
-        "NAME": "福建"
+        "NAME": "福建",
+        "PROVINCE": "Fujian"
       },
       "geometry": {
         "type": "Polygon",
@@ -14692,7 +14708,8 @@
       "id": 16,
       "properties": {
         "GEO_ID": 45,
-        "NAME": "广西"
+        "NAME": "广西",
+        "PROVINCE": "Guangxi"
       },
       "geometry": {
         "type": "Polygon",
@@ -15764,7 +15781,8 @@
       "id": 17,
       "properties": {
         "GEO_ID": 44,
-        "NAME": "广东"
+        "NAME": "广东",
+        "PROVINCE": "Guangdong"
       },
       "geometry": {
         "type": "Polygon",
@@ -17468,7 +17486,8 @@
       "id": 18,
       "properties": {
         "GEO_ID": 46,
-        "NAME": "海南"
+        "NAME": "海南",
+        "PROVINCE": "Hainan"
       },
       "geometry": {
         "type": "Polygon",
@@ -18000,7 +18019,8 @@
       "id": 19,
       "properties": {
         "GEO_ID": 22,
-        "NAME": "吉林"
+        "NAME": "吉林",
+        "PROVINCE": "Jilin"
       },
       "geometry": {
         "type": "Polygon",
@@ -18815,7 +18835,8 @@
       "id": 20,
       "properties": {
         "GEO_ID": 21,
-        "NAME": "辽宁"
+        "NAME": "辽宁",
+        "PROVINCE": "Liaoning"
       },
       "geometry": {
         "type": "Polygon",
@@ -19769,7 +19790,8 @@
       "id": 21,
       "properties": {
         "GEO_ID": 12,
-        "NAME": "天津"
+        "NAME": "天津",
+        "PROVINCE": "Tianjin"
       },
       "geometry": {
         "type": "Polygon",
@@ -20011,7 +20033,8 @@
       "id": 22,
       "properties": {
         "GEO_ID": 63,
-        "NAME": "青海"
+        "NAME": "青海",
+        "PROVINCE": "Qinghai"
       },
       "geometry": {
         "type": "Polygon",
@@ -20945,7 +20968,8 @@
       "id": 23,
       "properties": {
         "GEO_ID": 62,
-        "NAME": "甘肃"
+        "NAME": "甘肃",
+        "PROVINCE": "Gansu"
       },
       "geometry": {
         "type": "Polygon",
@@ -22099,7 +22123,8 @@
       "id": 24,
       "properties": {
         "GEO_ID": 61,
-        "NAME": "陕西"
+        "NAME": "陕西",
+        "PROVINCE": "Shaanxi"
       },
       "geometry": {
         "type": "Polygon",
@@ -22828,7 +22853,8 @@
       "id": 25,
       "properties": {
         "GEO_ID": 15,
-        "NAME": "内蒙古"
+        "NAME": "内蒙古",
+        "PROVINCE": "Inner Mongolia"
       },
       "geometry": {
         "type": "Polygon",
@@ -24829,7 +24855,8 @@
       "id": 26,
       "properties": {
         "GEO_ID": 50,
-        "NAME": "重庆"
+        "NAME": "重庆",
+        "PROVINCE": "Chongqing"
       },
       "geometry": {
         "type": "Polygon",
@@ -25426,7 +25453,8 @@
       "id": 27,
       "properties": {
         "GEO_ID": 13,
-        "NAME": "河北"
+        "NAME": "河北",
+        "PROVINCE": "Hebei"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -26575,7 +26603,8 @@
       "id": 28,
       "properties": {
         "GEO_ID": 31,
-        "NAME": "上海"
+        "NAME": "上海",
+        "PROVINCE": "Shanghai"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -26758,7 +26787,8 @@
       "id": 29,
       "properties": {
         "GEO_ID": 11,
-        "NAME": "北京"
+        "NAME": "北京",
+        "PROVINCE": "Beijing"
       },
       "geometry": {
         "type": "Polygon",
@@ -26984,7 +27014,8 @@
       "id": 30,
       "properties": {
         "GEO_ID": 886,
-        "NAME": "台湾"
+        "NAME": "台湾",
+        "PROVINCE": "Taiwan"
       },
       "geometry": {
         "type": "Polygon",
@@ -27408,7 +27439,8 @@
       "id": 31,
       "properties": {
         "GEO_ID": 852,
-        "NAME": "香港"
+        "NAME": "香港",
+        "PROVINCE": "Hong Kong"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -27601,7 +27633,8 @@
       "id": 32,
       "properties": {
         "GEO_ID": 853,
-        "NAME": "澳门"
+        "NAME": "澳门",
+        "PROVINCE": "Macau"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -27691,7 +27724,8 @@
       "id": 33,
       "properties": {
         "GEO_ID": 51,
-        "NAME": "四川"
+        "NAME": "四川",
+        "PROVINCE": "Sichuan"
       },
       "geometry": {
         "type": "Polygon",

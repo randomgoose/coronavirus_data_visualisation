@@ -1,0 +1,20 @@
+.Data {
+    display: flex;
+    flex-direction: column;
+    background-color: red;
+    align-items: center;
+    margin: 1rem;
+    position: relative;
+
+    & span {
+        margin: .6rem;
+    }
+
+    &__title {  
+        font-size: 2rem;
+    }
+
+    &__number {
+        font-size: 3rem;
+    }
+}

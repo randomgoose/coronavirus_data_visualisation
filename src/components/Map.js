@@ -1,24 +1,17 @@
 import React from 'react';
 import mapboxgl from 'mapbox-gl';
 import geoData from '../data/china-province.geojson'
+import { mousemove } from '../redux/action-creators'
+import { connect } from 'react-redux'
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
 
 class Map extends React.Component {
 
-  constructor(props){
-    super(props)
-    this.mapRef = React.createRef()
+  mapRef = React.createRef()
 
-    this.state = {
-      currentProvince: "",
-      coordinates: [0, 0],
-      hoveredProvinceId: null,
-      canvas: null
-    }
-  }
-  
   componentDidMount() {
+
     const map = new mapboxgl.Map({
       container: this.mapRef.current,
       style: "mapbox://styles/mapbox/dark-v10",
@@ -51,47 +44,59 @@ class Map extends React.Component {
     })
 
     map.on("mousemove", "provinces-fills", (e) => {
+      console.log(e.features[0])
       map.getCanvas().style.cursor = 'pointer'
       if (e.features.length > 0) {
-        if (this.state.hoveredProvinceId >= 0) {
+        if (this.props.hoveredProvinceId >= 0) {
           map.setFeatureState({
-            source: "provinces", id: this.state.hoveredProvinceId
+            source: "provinces", id: this.props.hoveredProvinceId
           },  { hover: false})
         }
-        this.setState({
-          hoveredProvinceId: e.features[0].id
-        }, () => {
-          map.setFeatureState({source: "provinces", id: this.state.hoveredProvinceId}, {
-            hover: true
-          })
+
+        this.props.mousemove(
+          e.features[0].id,                                               // Identifier of the hovered province  
+          [e.originalEvent.clientX, e.originalEvent.clientY],             // Position of the mouse cursor
+          e.features[0].properties.NAME,                                  // Name of the hovered province
+          e.features[0].properties.PROVINCE                               // Pinyin of the hovered province
+          )
+        map.setFeatureState({source: "provinces", id: this.props.hoveredProvinceId}, {
+          hover: true
         })
+
       }
     })
 
     map.on("mouseleave", "provinces-fills", () => {
-      if (this.state.hoveredProvinceId >= 0) {
+      if (this.props.hoveredProvinceId >= 0) {
         map.setFeatureState({
-          source: "provinces", id: this.state.hoveredProvinceId
+          source: "provinces", id: this.props.hoveredProvinceId
         }, { hover: false})
       }
-      this.setState({
-        hoveredProvinceId: null
-      })
-    })
-    
 
-    this.setState({
-      canvas: map.getCanvas()
+      this.props.mousemove(null)
+      
     })
+
+    map.addControl(new mapboxgl.FullscreenControl());
   }
 
   render() {
+    console.log(this.props)
     return (
       <div className="Map">
         <div className="absolute top right left bottom" ref={this.mapRef}></div>
+        <div className=""></div>
       </div>
     );
   }
 }
+
+function mapStateToProps(state) {
+  return state
+}
+
+const mapDispatchToProps = {
+  mousemove
+}
   
-export default Map;
+export default connect(mapStateToProps, mapDispatchToProps)(Map);

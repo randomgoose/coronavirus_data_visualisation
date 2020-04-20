@@ -1,1 +1,5 @@
-@import "./components/Card"
+@import "./base/base";
+@import "./base/typography";
+
+@import "./components/Tooltip";
+@import "./components/Data";
