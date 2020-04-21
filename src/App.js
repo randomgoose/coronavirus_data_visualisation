@@ -3,6 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import './App.css';
 import './sass/main.scss'
 import Map from './components/Map'
+import TimeSlider from './components/TimeSlider/TimeSlider'
 import Tooltip from './components/Tooltip/Tooltip'
 import { connect } from 'react-redux'
 import { fetchData } from './redux/action-creators'
@@ -18,6 +19,7 @@ class App extends React.Component {
   render() {
     return (
       <>
+        <TimeSlider />
         <Tooltip coordinates={this.props.coordinates} data={this.props.data} />
         <Map />
       </>

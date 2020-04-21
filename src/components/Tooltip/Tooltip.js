@@ -1,7 +1,7 @@
 import React from 'react'
 import Data from './Data'
 import { connect } from 'react-redux'
-import pinyin from 'pinyin'
+import Chart from '../Chart/Chart'
 
 class Tooltip extends React.Component {
     constructor(props) {
@@ -26,7 +26,10 @@ class Tooltip extends React.Component {
                 "left": this.props.coordinates ? this.props.coordinates[0] + "px" : 0,
                 "display": this.props.coordinates ? "flex" : "none"
             }}>
-                <span className="">{this.props.hoveredProvinceName}</span>
+                <span className="Tooltip__title">{this.props.hoveredProvinceName}</span>
+
+                <Chart />
+
                 <div className="Tooltip__data-group">
                     <Data title="累计确诊人数" trend="新增 +12" number={data ? data.latest.confirmed : 0}/>
                     <Data title="剩余确诊人数" trend="新增 +12" number={24}/>

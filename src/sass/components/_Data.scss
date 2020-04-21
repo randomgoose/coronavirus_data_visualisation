@@ -1,7 +1,6 @@
 .Data {
     display: flex;
     flex-direction: column;
-    background-color: red;
     align-items: center;
     margin: 1rem;
     position: relative;
@@ -11,10 +10,15 @@
     }
 
     &__title {  
-        font-size: 2rem;
+        font-size: 1.6rem;
+        font-weight: bold;
     }
 
     &__number {
         font-size: 3rem;
+    }
+
+    &__trend {
+        font-size: 1.2rem;
     }
 }
