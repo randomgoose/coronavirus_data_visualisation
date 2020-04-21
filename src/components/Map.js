@@ -1,19 +1,34 @@
 import React from 'react';
 import mapboxgl from 'mapbox-gl';
-import geoData from '../data/china-province.geojson'
-import countryData from '../data/countries.geojson'
+// import geoData from '../data/china-province.geojson'
 import { mousemove } from '../redux/action-creators'
 import { connect } from 'react-redux'
+const geoData = require("../data/china-province.geojson")
+const geoJSON = require("geojson")
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
 
-class Map extends React.Component {
+const stops = [
+        [0, "#ffffff"],
+        [10, "#ffd7cb"],
+        [100, "#f0b19f"],
+        [1000, "#de8c75"],
+        [10000, "#ca664d"],
+        [100000, "#b43e27"],
+        [200000, "#9b0000"]
+]
 
+class Map extends React.Component {
+        map
         mapRef = React.createRef()
+
+        componentDidUpdate() {
+
+        }
 
         componentDidMount() {
 
-                const map = new mapboxgl.Map({
+                this.map = new mapboxgl.Map({
                         container: this.mapRef.current,
                         style: "mapbox://styles/mapbox/dark-v10",
                         zoom: 2,
@@ -22,34 +37,13 @@ class Map extends React.Component {
                         antialias: true
                 });
 
-                map.on("load", () => {
-                        map.addSource("provinces", {
+                this.map.on("load", () => {
+                        this.map.addSource("provinces", {
                                 type: "geojson",
                                 data: geoData
                         })
 
-                        map.addSource("country", {
-                                type: "geojson",
-                                data: countryData
-                        })
-
-
-                        map.addLayer({
-                                id: "country-fills",
-                                type: "fill",
-                                source: "country",
-                                paint: {
-                                        "fill-color": "#00ff00",
-                                        "fill-opacity": [
-                                                "case",
-                                                ["boolean", ["feature-state", "hover"], false],
-                                                1,
-                                                1
-                                        ]
-                                }
-                        })
-
-                        map.addLayer({
+                        this.map.addLayer({
                                 id: "provinces-fills",
                                 type: "fill",
                                 source: "provinces",
@@ -58,19 +52,25 @@ class Map extends React.Component {
                                         "fill-opacity": [
                                                 "case",
                                                 ["boolean", ["feature-state", "hover"], false],
-                                                .5,
+                                                1,
                                                 0
                                         ]
                                 }
                         })
+
+                        this.setFill()
                 })
 
-                map.on("mousemove", "provinces-fills", (e) => {
-                        console.log(e.features[0])
-                        map.getCanvas().style.cursor = 'pointer'
+                console.log(this.map.querySourceFeatures('provinces', {
+                        filter: ["==", "id", 2]
+                }))
+
+                this.map.on("mousemove", "provinces-fills", (e) => {
+                        console.log(e.features)
+                        this.map.getCanvas().style.cursor = 'pointer'
                         if (e.features.length > 0) {
                                 if (this.props.hoveredProvinceId >= 0) {
-                                        map.setFeatureState({
+                                        this.map.setFeatureState({
                                                 source: "provinces", id: this.props.hoveredProvinceId
                                         }, { hover: false })
                                 }
@@ -81,15 +81,16 @@ class Map extends React.Component {
                                         e.features[0].properties.NAME,                                  // Name of the hovered province
                                         e.features[0].properties.PROVINCE                               // Pinyin of the hovered province
                                 )
-                                map.setFeatureState({ source: "provinces", id: this.props.hoveredProvinceId }, {
+                                this.map.setFeatureState({ source: "provinces", id: this.props.hoveredProvinceId }, {
                                         hover: true
                                 })
                         }
+                        console.log(this.map.getFeatureState({id: this.props.hoveredProvinceId, source: "provinces"}))
                 })
 
-                map.on("mouseleave", "provinces-fills", () => {
+                this.map.on("mouseleave", "provinces-fills", () => {
                         if (this.props.hoveredProvinceId >= 0) {
-                                map.setFeatureState({
+                                this.map.setFeatureState({
                                         source: "provinces", id: this.props.hoveredProvinceId
                                 }, { hover: false })
                         }
@@ -98,11 +99,11 @@ class Map extends React.Component {
 
                 })
 
-                map.on("click", "provinces-fills", () => {
+                this.map.on("click", "provinces-fills", () => {
                         const locationData = this.props.data.locations
                         const data = locationData.find(item => item.province === this.props.hoveredProvincePinyin)
 
-                        map.flyTo({
+                        this.map.flyTo({
                                 center: [
                                         data.coordinates.longitude,
                                         data.coordinates.latitude
@@ -114,11 +115,18 @@ class Map extends React.Component {
 
                 })
 
-                map.addControl(new mapboxgl.FullscreenControl());
+                this.map.addControl(new mapboxgl.FullscreenControl());
         }
 
+        setFill() {
+                this.map.setPaintProperty('provinces-fills', 'fill-color', {
+                  property: "GEO_ID",
+                  stops: stops
+                });    
+              }
+            
+
         render() {
-                console.log(this.props)
                 return (
                         <div className="Map">
                                 <div className="absolute top right left bottom" ref={this.mapRef}></div>

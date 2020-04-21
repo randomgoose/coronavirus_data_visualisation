@@ -10,7 +10,7 @@ export function mousemove(hoveredProvinceId, coordinates, hoveredProvinceName, h
 
 export function fetchData() {
     return (dispatch, getState) => {
-        const url = "https://coronavirus-tracker-api.herokuapp.com/v2/locations?source=jhu&country_code=CN"
+        const url = "https://coronavirus-tracker-api.herokuapp.com/v2/locations?source=jhu&country_code=CN&timelines=true"
         
         fetch(url)
         .then(res => res.json())

@@ -2,6 +2,7 @@ import React from 'react'
 import Data from './Data'
 import { connect } from 'react-redux'
 import Chart from '../Chart/Chart'
+const geoJSON = require("geojson")
 
 class Tooltip extends React.Component {
     constructor(props) {
@@ -9,15 +10,15 @@ class Tooltip extends React.Component {
         this.tooltipRef = React.createRef()
     }
 
-    
-
     render() {
         let data
 
         if(this.props.hoveredProvincePinyin) {
-            const locationData = this.props.data.locations
+            const locationData = typeof this.props.data.locations === 'object' && this.props.data.locations.length > 0 ? this.props.data.locations : []
             data = locationData.find(item => item.province === this.props.hoveredProvincePinyin)
+            console.log(geoJSON.parse(locationData, {Point: ["lat", "lng"]}))
         }
+
 
         return (
             
@@ -28,11 +29,12 @@ class Tooltip extends React.Component {
             }}>
                 <span className="Tooltip__title">{this.props.hoveredProvinceName}</span>
 
-                <Chart />
+                <Chart data={data ? data.timelines.confirmed.timeline : []}/>
 
                 <div className="Tooltip__data-group">
-                    <Data title="累计确诊人数" trend="新增 +12" number={data ? data.latest.confirmed : 0}/>
-                    <Data title="剩余确诊人数" trend="新增 +12" number={24}/>
+                    <Data title="累计确诊人数" trend="新增 +12" number={data ? data.latest.confirmed : "暂无数据"}/>
+                    <Data title="累计死亡人数" trend="新增 +12" number={data ? data.latest.deaths : "暂无数据"}/>
+                    <Data title="累计治愈人数" trend="新增 +12" number={data ? data.latest.recovered : "暂无数据"}/>
                 </div>
                 {/* <div>{ this.props.data.latest.confirmed }</div> */}
             </div>
