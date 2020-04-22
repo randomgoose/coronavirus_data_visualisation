@@ -14,9 +14,9 @@ class Tooltip extends React.Component {
         let data
 
         if(this.props.hoveredProvincePinyin) {
-            const locationData = typeof this.props.data.locations === 'object' && this.props.data.locations.length > 0 ? this.props.data.locations : []
+            const locationData = typeof this.props.data_china.locations === 'object' && this.props.data_china.locations.length > 0 ? this.props.data_china.locations : []
             data = locationData.find(item => item.province === this.props.hoveredProvincePinyin)
-            console.log(geoJSON.parse(locationData, {Point: ["lat", "lng"]}))
+            console.log(data.timelines.confirmed.timeline)
         }
 
 
@@ -36,7 +36,7 @@ class Tooltip extends React.Component {
                     <Data title="累计死亡人数" trend="新增 +12" number={data ? data.latest.deaths : "暂无数据"}/>
                     <Data title="累计治愈人数" trend="新增 +12" number={data ? data.latest.recovered : "暂无数据"}/>
                 </div>
-                {/* <div>{ this.props.data.latest.confirmed }</div> */}
+                {/* <div>{ this.props.data_china.latest.confirmed }</div> */}
             </div>
         )
     }

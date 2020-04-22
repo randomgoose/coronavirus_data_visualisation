@@ -15,11 +15,35 @@ export function fetchData() {
         fetch(url)
         .then(res => res.json())
         .then(data => {
-            console.log(data)
             dispatch({
                 type: "FETCH_DATA",
-                data: data
+                data_china: data
             })             
         })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+}
+
+export function fetchAllData() {
+    return (dispatch, getState) => {
+        const url = "https://coronavirus-tracker-api.herokuapp.com/all"
+
+        fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            dispatch({
+                type: "FETCH_ALL_DATA",
+                data_world: data
+            })
+        })
+    }
+}
+
+export function changeDate(newDate) {
+    return {
+        type: "CHANGE_DATE",
+        newDate
     }
 }

@@ -3,7 +3,9 @@ const intialState = {
     coordinates: null,
     hoveredProvinceName: null,
     hoveredProvincePinyin: null,
-    data: {}
+    data_china: {},
+    data_world: {},
+    date: new Date()
 }
 
 export function reducer(map=intialState, action) {
@@ -19,8 +21,13 @@ export function reducer(map=intialState, action) {
         case "FETCH_DATA":
             return {
                 ...map,
-                data: action.data
-            }    
+                data_china: action.data_china
+            }
+        case "FETCH_ALL_DATA":
+            return { 
+                ...map,
+                data_world: action.data_world
+            }
         default:
             return map
     }

@@ -1,10 +1,10 @@
 import React from 'react';
 import mapboxgl from 'mapbox-gl';
-// import geoData from '../data/china-province.geojson'
+// import geoDataChina from '../data/china-province.geojson'
 import { mousemove } from '../redux/action-creators'
 import { connect } from 'react-redux'
-const geoData = require("../data/china-province.geojson")
-const geoJSON = require("geojson")
+import geoDataChina from "../data/china-province.json"
+import geoDataWorld from "../data/countries.json" 
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
 
@@ -21,27 +21,61 @@ const stops = [
 class Map extends React.Component {
         map
         mapRef = React.createRef()
+        
 
         componentDidUpdate() {
+                
+                this.setFill()
 
+                this.props.data_china.locations.forEach(i => {
+                        geoDataChina.features.find(feature => feature.properties.PROVINCE === i.province).properties.CASES = i.latest.confirmed
+                })
+
+                // console.log(this.props)
+                // this.props.data_world.confirmed.locations.forEach(i => {
+                //         geoDataWorld.features.find(feature => feature.properties.ADMIN === i.country).properties.CASES = i.latest
+                // })
         }
 
         componentDidMount() {
-
                 this.map = new mapboxgl.Map({
                         container: this.mapRef.current,
                         style: "mapbox://styles/mapbox/dark-v10",
                         zoom: 2,
                         center: [-87.618312, 41.866674],
                         pitch: 0,
-                        antialias: true
+                        antialias: true,
+                        generateId: true
                 });
 
                 this.map.on("load", () => {
                         this.map.addSource("provinces", {
                                 type: "geojson",
-                                data: geoData
+                                data: geoDataChina
                         })
+
+                        // this.map.addSource("countries", {
+                        //         type: "geojson",
+                        //         data: geoDataWorld
+                        // })
+
+                        this.map.addLayer({
+                                id: "cases-fills-china",
+                                type: "fill",
+                                source: "provinces"
+                        }, 'settlement-label')
+
+                        // this.map.addLayer({
+                        //         id: "cases-fills-china",
+                        //         type: "fill",
+                        //         source: "provinces"
+                        // }, 'settlement-label')
+
+                        // this.map.addLayer({
+                        //         id: "world-fills",
+                        //         type: "fill",
+                        //         source: "countries"
+                        // }, 'settlement-label')
 
                         this.map.addLayer({
                                 id: "provinces-fills",
@@ -53,20 +87,17 @@ class Map extends React.Component {
                                                 "case",
                                                 ["boolean", ["feature-state", "hover"], false],
                                                 1,
-                                                0
+                                                .1
                                         ]
                                 }
-                        })
+                        }, 'settlement-label')
 
                         this.setFill()
                 })
-
-                console.log(this.map.querySourceFeatures('provinces', {
-                        filter: ["==", "id", 2]
-                }))
+               
 
                 this.map.on("mousemove", "provinces-fills", (e) => {
-                        console.log(e.features)
+
                         this.map.getCanvas().style.cursor = 'pointer'
                         if (e.features.length > 0) {
                                 if (this.props.hoveredProvinceId >= 0) {
@@ -85,7 +116,6 @@ class Map extends React.Component {
                                         hover: true
                                 })
                         }
-                        console.log(this.map.getFeatureState({id: this.props.hoveredProvinceId, source: "provinces"}))
                 })
 
                 this.map.on("mouseleave", "provinces-fills", () => {
@@ -100,7 +130,7 @@ class Map extends React.Component {
                 })
 
                 this.map.on("click", "provinces-fills", () => {
-                        const locationData = this.props.data.locations
+                        const locationData = this.props.data_china.locations
                         const data = locationData.find(item => item.province === this.props.hoveredProvincePinyin)
 
                         this.map.flyTo({
@@ -119,8 +149,8 @@ class Map extends React.Component {
         }
 
         setFill() {
-                this.map.setPaintProperty('provinces-fills', 'fill-color', {
-                  property: "GEO_ID",
+                this.map.setPaintProperty('cases-fills-china', 'fill-color', {
+                  property: "CASES",
                   stops: stops
                 });    
               }

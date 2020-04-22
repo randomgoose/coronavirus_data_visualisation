@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react'
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend
 } from 'recharts';
 
-export default class Example extends PureComponent {
-  static jsfiddleUrl = 'https://jsfiddle.net/alidingling/xqjtetw0/';
+export default class Chart extends PureComponent {
 
   render() {
     let data = []
@@ -16,16 +15,16 @@ export default class Example extends PureComponent {
         })
       }
     }
-    console.log(data)
+
     return (
       // <ResponsiveContainer width={700} height="80%">
         <LineChart
           width={600}
           height={300}
           data={data}
-          // margin={{
-          //   top: 5, bottom: 5, left: 5, right: 5
-          // }}
+          margin={{
+            top: 5, bottom: 5, left: 5, right: 60
+          }}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis />
