@@ -1,9 +1,8 @@
 import React from 'react';
-import mapboxgl from 'mapbox-gl';
+import mapboxgl from 'mapbox-gl'
 import './App.css';
 import './sass/main.scss'
 import Map from './components/Map'
-import TimeSlider from './components/TimeSlider/TimeSlider' 
 import Tooltip from './components/Tooltip/Tooltip'
 import Dashboard from './components/Dashboard'
 import { connect } from 'react-redux'

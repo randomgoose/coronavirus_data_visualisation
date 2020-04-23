@@ -5,6 +5,22 @@
     margin: 1rem;
     position: relative;
 
+    &.red {
+        color: $color-red;
+    }
+
+    &.black {
+        color: $color-black;
+    }
+    
+    &.blue {
+        color: $color-blue;
+    }
+
+    &.orange {
+        color: $color-orange;
+    }
+
     & span {
         margin: .6rem;
     }

@@ -15,12 +15,28 @@
         padding: 2rem;
         font-size: 2rem;
     }
-    
+
+    &__section {
+        border-top: 1px solid $color-grey-light;
+        border-bottom: 1px solid $color-grey-light;
+    }
+
+    &__subtitle {
+        text-align: left;
+        //padding: 4rem;
+        margin: 2rem 4rem 0 4rem;
+        font-size: 1.8rem;
+        font-weight: bold;
+        //display: inline-block;
+        //background-color: red;
+    }
+
     &__data-group {
         height: 100%;
         display: grid;
         grid-template-columns: 50% 50%;
         padding: 2rem;
+
 
         & .Data {
             flex: 0 0 25%;

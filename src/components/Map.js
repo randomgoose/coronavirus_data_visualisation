@@ -83,6 +83,15 @@ class Map extends React.Component {
                         })
 
                         this.map.addLayer({
+                                id: "countries-line",
+                                type: "line",
+                                source: "countries",
+                                paint: {
+                                        "line-color": "#333333"
+                                }
+                        })
+
+                        this.map.addLayer({
                                 id: "provinces-fills",
                                 type: "fill",
                                 source: "provinces",
@@ -96,6 +105,8 @@ class Map extends React.Component {
                                         ]
                                 }
                         }, 'settlement-label')
+
+                        
 
                         // virusDataWorld.forEach(i => {
                         //         const country = geoDataWorld.features.find(feature => feature.properties.ADMIN === i.country)
@@ -112,14 +123,15 @@ class Map extends React.Component {
                                         id: date.date,
                                         type: "fill",
                                         source: "countries",
-                                        // visibility: "none",
                                         paint: {
                                                 "fill-opacity": 0
                                         }
-                                })
+                                }, 'settlement-label')
 
                                 this.setFill(date.date, date.date)
                         })
+
+
 
                         // this.map.addLayer({
                         //         id: '2020-04-12',
