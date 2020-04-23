@@ -1,0 +1,29 @@
+.Dashboard {
+    position: absolute;
+    bottom: 0;
+    // width: 30rem;
+    // height: 30rem;
+    z-index: 999;
+    background-color: #fff;
+    box-shadow: 0 0 1rem black;
+    border-radius: .6rem;
+    margin: 3rem;
+    text-align: center;
+    
+    & h1 {
+        // background-color: red;
+        padding: 2rem;
+        font-size: 2rem;
+    }
+    
+    &__data-group {
+        height: 100%;
+        display: grid;
+        grid-template-columns: 50% 50%;
+        padding: 2rem;
+
+        & .Data {
+            flex: 0 0 25%;
+        }
+    }
+}

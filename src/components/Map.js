@@ -5,6 +5,7 @@ import { mousemove } from '../redux/action-creators'
 import { connect } from 'react-redux'
 import geoDataChina from "../data/china-province.json"
 import geoDataWorld from "../data/countries.json" 
+import virusDataWorld from "../data/world_timeline.json"
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
 
@@ -24,12 +25,32 @@ class Map extends React.Component {
         
 
         componentDidUpdate() {
+                virusDataWorld.forEach(i => {
+                        const country = geoDataWorld.features.find(feature => feature.properties.ADMIN === i.country)
+                        if (country) {
+                                const confirmedCases = i.timeline.find(date => date.date === this.props.date).confirmed
+                                // console.log(confirmedCases)
+                                if ( confirmedCases >= 0 ) {
+                                        country.properties.CASES = confirmedCases
+                                }
+                                
+                        }
+                })
                 
+                if (this.map.getSource('countries')) {
+                        this.map.getSource('countries').setData(geoDataWorld)
+                }
+
                 this.setFill()
+                
 
                 this.props.data_china.locations.forEach(i => {
                         geoDataChina.features.find(feature => feature.properties.PROVINCE === i.province).properties.CASES = i.latest.confirmed
                 })
+
+                // this.map.removeLayer("cases-fills-world")
+
+
 
                 // console.log(this.props)
                 // this.props.data_world.confirmed.locations.forEach(i => {
@@ -54,28 +75,17 @@ class Map extends React.Component {
                                 data: geoDataChina
                         })
 
-                        // this.map.addSource("countries", {
-                        //         type: "geojson",
-                        //         data: geoDataWorld
-                        // })
+                        this.map.addSource("countries", {
+                                type: "geojson",
+                                data: geoDataWorld
+                        })
 
                         this.map.addLayer({
-                                id: "cases-fills-china",
+                                id: "cases-fills-world",
                                 type: "fill",
-                                source: "provinces"
+                                source: "countries"
                         }, 'settlement-label')
 
-                        // this.map.addLayer({
-                        //         id: "cases-fills-china",
-                        //         type: "fill",
-                        //         source: "provinces"
-                        // }, 'settlement-label')
-
-                        // this.map.addLayer({
-                        //         id: "world-fills",
-                        //         type: "fill",
-                        //         source: "countries"
-                        // }, 'settlement-label')
 
                         this.map.addLayer({
                                 id: "provinces-fills",
@@ -146,10 +156,11 @@ class Map extends React.Component {
                 })
 
                 this.map.addControl(new mapboxgl.FullscreenControl());
+                
         }
 
         setFill() {
-                this.map.setPaintProperty('cases-fills-china', 'fill-color', {
+                this.map.setPaintProperty('cases-fills-world', 'fill-color', {
                   property: "CASES",
                   stops: stops
                 });    

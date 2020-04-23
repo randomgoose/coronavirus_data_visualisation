@@ -5,6 +5,7 @@ import './sass/main.scss'
 import Map from './components/Map'
 import TimeSlider from './components/TimeSlider/TimeSlider' 
 import Tooltip from './components/Tooltip/Tooltip'
+import Dashboard from './components/Dashboard'
 import { connect } from 'react-redux'
 import { fetchData, fetchAllData } from './redux/action-creators'
 
@@ -22,7 +23,7 @@ class App extends React.Component {
 
     return (
       <>
-        <TimeSlider />
+        <Dashboard />
         {/* <Slider defaultValue={30} /> */}
         <Tooltip coordinates={this.props.coordinates} data={this.props.data} />
         <Map />

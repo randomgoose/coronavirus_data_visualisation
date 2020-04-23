@@ -5,14 +5,14 @@ const intialState = {
     hoveredProvincePinyin: null,
     data_china: {},
     data_world: {},
-    date: new Date()
+    date: "2020-01-22"
 }
 
-export function reducer(map=intialState, action) {
+export function reducer(state=intialState, action) {
     switch(action.type) {
         case "MOUSE_MOVE":
             return {
-                ...map,
+                ...state,
                 hoveredProvinceId: action.hoveredProvinceId,
                 coordinates: action.coordinates,
                 hoveredProvinceName: action.hoveredProvinceName,
@@ -20,15 +20,20 @@ export function reducer(map=intialState, action) {
             }
         case "FETCH_DATA":
             return {
-                ...map,
+                ...state,
                 data_china: action.data_china
             }
         case "FETCH_ALL_DATA":
             return { 
-                ...map,
+                ...state,
                 data_world: action.data_world
             }
+        case "CHANGE_DATE":
+            return {
+                ...state,
+                date: action.newDate
+            }
         default:
-            return map
+            return state
     }
 }

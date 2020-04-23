@@ -2,7 +2,6 @@ import React from 'react'
 import Data from './Data'
 import { connect } from 'react-redux'
 import Chart from '../Chart/Chart'
-const geoJSON = require("geojson")
 
 class Tooltip extends React.Component {
     constructor(props) {
