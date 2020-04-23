@@ -33,24 +33,26 @@ class Map extends React.Component {
                                 if ( confirmedCases >= 0 ) {
                                         country.properties.CASES = confirmedCases
                                 }
-                                
                         }
                 })
-                
-                if (this.map.getSource('countries')) {
-                        this.map.getSource('countries').setData(geoDataWorld)
-                }
 
-                this.setFill()
-                
 
-                this.props.data_china.locations.forEach(i => {
-                        geoDataChina.features.find(feature => feature.properties.PROVINCE === i.province).properties.CASES = i.latest.confirmed
+                virusDataWorld.forEach(i => {
+                        const country = geoDataWorld.features.find(feature => feature.properties.ADMIN === i.country)
+                        if (country) {
+
+                                i.timeline.forEach(date => {
+                                        country.properties[`${date.date}`] = date.confirmed
+                                })
+                        }
                 })
 
-                // this.map.removeLayer("cases-fills-world")
 
+                virusDataWorld[0].timeline.forEach(date => {
+                        this.map.setPaintProperty(date.date, 'fill-opacity', 0)
+                })
 
+                this.map.setPaintProperty(this.props.date, 'fill-opacity', 1)
 
                 // console.log(this.props)
                 // this.props.data_world.confirmed.locations.forEach(i => {
@@ -81,13 +83,6 @@ class Map extends React.Component {
                         })
 
                         this.map.addLayer({
-                                id: "cases-fills-world",
-                                type: "fill",
-                                source: "countries"
-                        }, 'settlement-label')
-
-
-                        this.map.addLayer({
                                 id: "provinces-fills",
                                 type: "fill",
                                 source: "provinces",
@@ -102,66 +97,114 @@ class Map extends React.Component {
                                 }
                         }, 'settlement-label')
 
-                        this.setFill()
+                        // virusDataWorld.forEach(i => {
+                        //         const country = geoDataWorld.features.find(feature => feature.properties.ADMIN === i.country)
+                        //         if (country) {
+
+                        //                 i.timeline.forEach(date => {
+                        //                         country.properties[`${date.date}`] = date.confirmed
+                        //                 })
+                        //         }
+                        // })
+
+                        virusDataWorld[0].timeline.forEach(date => {
+                                this.map.addLayer({
+                                        id: date.date,
+                                        type: "fill",
+                                        source: "countries",
+                                        // visibility: "none",
+                                        paint: {
+                                                "fill-opacity": 0
+                                        }
+                                })
+
+                                this.setFill(date.date, date.date)
+                        })
+
+                        // this.map.addLayer({
+                        //         id: '2020-04-12',
+                        //         type: "fill",
+                        //         source: "countries"
+                        // })
+
+                       
+
+                        // virusDataWorld[0].timeline.forEach(date => {
+                        //         if (date) {
+                        //                 this.map.addLayer({
+                        //                         id: date.date,
+                        //                         type: "fill",
+                        //                         source: "countries",
+                        //                         paint: {
+                        //                                 "fill-opacity": 1
+                        //                         }
+                        //                 })
+
+                        //                 this.setFill(date.date, date.date)
+
+                        //                 console.log(this.map.getLayer(date.date))
+                        //         }                   
+                        // })
+
                 })
                
 
-                this.map.on("mousemove", "provinces-fills", (e) => {
+                // this.map.on("mousemove", "provinces-fills", (e) => {
 
-                        this.map.getCanvas().style.cursor = 'pointer'
-                        if (e.features.length > 0) {
-                                if (this.props.hoveredProvinceId >= 0) {
-                                        this.map.setFeatureState({
-                                                source: "provinces", id: this.props.hoveredProvinceId
-                                        }, { hover: false })
-                                }
+                //         this.map.getCanvas().style.cursor = 'pointer'
+                //         if (e.features.length > 0) {
+                //                 if (this.props.hoveredProvinceId >= 0) {
+                //                         this.map.setFeatureState({
+                //                                 source: "provinces", id: this.props.hoveredProvinceId
+                //                         }, { hover: false })
+                //                 }
 
-                                this.props.mousemove(
-                                        e.features[0].id,                                               // Identifier of the hovered province  
-                                        [e.originalEvent.clientX, e.originalEvent.clientY],             // Position of the mouse cursor
-                                        e.features[0].properties.NAME,                                  // Name of the hovered province
-                                        e.features[0].properties.PROVINCE                               // Pinyin of the hovered province
-                                )
-                                this.map.setFeatureState({ source: "provinces", id: this.props.hoveredProvinceId }, {
-                                        hover: true
-                                })
-                        }
-                })
+                //                 this.props.mousemove(
+                //                         e.features[0].id,                                               // Identifier of the hovered province  
+                //                         [e.originalEvent.clientX, e.originalEvent.clientY],             // Position of the mouse cursor
+                //                         e.features[0].properties.NAME,                                  // Name of the hovered province
+                //                         e.features[0].properties.PROVINCE                               // Pinyin of the hovered province
+                //                 )
+                //                 this.map.setFeatureState({ source: "provinces", id: this.props.hoveredProvinceId }, {
+                //                         hover: true
+                //                 })
+                //         }
+                // })
 
-                this.map.on("mouseleave", "provinces-fills", () => {
-                        if (this.props.hoveredProvinceId >= 0) {
-                                this.map.setFeatureState({
-                                        source: "provinces", id: this.props.hoveredProvinceId
-                                }, { hover: false })
-                        }
+                // this.map.on("mouseleave", "provinces-fills", () => {
+                //         if (this.props.hoveredProvinceId >= 0) {
+                //                 this.map.setFeatureState({
+                //                         source: "provinces", id: this.props.hoveredProvinceId
+                //                 }, { hover: false })
+                //         }
 
-                        this.props.mousemove(null)
+                //         this.props.mousemove(null)
 
-                })
+                // })
 
-                this.map.on("click", "provinces-fills", () => {
-                        const locationData = this.props.data_china.locations
-                        const data = locationData.find(item => item.province === this.props.hoveredProvincePinyin)
+                // this.map.on("click", "provinces-fills", () => {
+                //         const locationData = this.props.data_china.locations
+                //         const data = locationData.find(item => item.province === this.props.hoveredProvincePinyin)
 
-                        this.map.flyTo({
-                                center: [
-                                        data.coordinates.longitude,
-                                        data.coordinates.latitude
-                                ],
-                                speed: 0.3,
-                                zoom: 4,
-                                pitch: 60
-                        })
+                //         this.map.flyTo({
+                //                 center: [
+                //                         data.coordinates.longitude,
+                //                         data.coordinates.latitude
+                //                 ],
+                //                 speed: 0.3,
+                //                 zoom: 4,
+                //                 pitch: 60
+                //         })
 
-                })
+                // })
 
                 this.map.addControl(new mapboxgl.FullscreenControl());
                 
         }
 
-        setFill() {
-                this.map.setPaintProperty('cases-fills-world', 'fill-color', {
-                  property: "CASES",
+        setFill(layerId, properties) {
+                this.map.setPaintProperty(layerId, 'fill-color', {
+                  property: layerId,
                   stops: stops
                 });    
               }
