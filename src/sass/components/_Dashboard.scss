@@ -17,8 +17,10 @@
     }
 
     &__section {
-        border-top: 1px solid $color-grey-light;
-        border-bottom: 1px solid $color-grey-light;
+        &:not(:first-child):not(:last-child) {
+            border-top: 1px solid $color-grey-light;
+            border-bottom: 1px solid $color-grey-light;
+        }
     }
 
     &__subtitle {

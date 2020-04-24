@@ -15,7 +15,6 @@ class Tooltip extends React.Component {
         if(this.props.hoveredProvincePinyin) {
             const locationData = typeof this.props.data_china.locations === 'object' && this.props.data_china.locations.length > 0 ? this.props.data_china.locations : []
             data = locationData.find(item => item.province === this.props.hoveredProvincePinyin)
-            console.log(data.timelines.confirmed.timeline)
         }
 
 

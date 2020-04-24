@@ -23,18 +23,20 @@ class Map extends React.Component {
         map
         mapRef = React.createRef()
         
+        state = {
+                hoveredCountryId: null
+        }
 
         componentDidUpdate() {
-                virusDataWorld.forEach(i => {
-                        const country = geoDataWorld.features.find(feature => feature.properties.ADMIN === i.country)
-                        if (country) {
-                                const confirmedCases = i.timeline.find(date => date.date === this.props.date).confirmed
-                                // console.log(confirmedCases)
-                                if ( confirmedCases >= 0 ) {
-                                        country.properties.CASES = confirmedCases
-                                }
-                        }
-                })
+                // virusDataWorld.forEach(i => {
+                //         const country = geoDataWorld.features.find(feature => feature.properties.ADMIN === i.country)
+                //         if (country) {
+                //                 const confirmedCases = i.timeline.find(date => date.date === this.props.date).confirmed
+                //                 if ( confirmedCases >= 0 ) {
+                //                         country.properties.CASES = confirmedCases
+                //                 }
+                //         }
+                // })
 
 
                 virusDataWorld.forEach(i => {
@@ -52,7 +54,7 @@ class Map extends React.Component {
                         this.map.setPaintProperty(date.date, 'fill-opacity', 0)
                 })
 
-                this.map.setPaintProperty(this.props.date, 'fill-opacity', 1)
+                this.map.setPaintProperty(this.props.date, 'fill-opacity', .5)
 
                 // console.log(this.props)
                 // this.props.data_world.confirmed.locations.forEach(i => {
@@ -67,8 +69,7 @@ class Map extends React.Component {
                         zoom: 2,
                         center: [-87.618312, 41.866674],
                         pitch: 0,
-                        antialias: true,
-                        generateId: true
+                        antialias: true
                 });
 
                 this.map.on("load", () => {
@@ -79,15 +80,16 @@ class Map extends React.Component {
 
                         this.map.addSource("countries", {
                                 type: "geojson",
-                                data: geoDataWorld
+                                data: geoDataWorld,
+                                generateId: true
                         })
-
+                        
                         this.map.addLayer({
                                 id: "countries-line",
                                 type: "line",
                                 source: "countries",
                                 paint: {
-                                        "line-color": "#333333"
+                                        "line-color": "#666666"
                                 }
                         })
 
@@ -106,8 +108,6 @@ class Map extends React.Component {
                                 }
                         }, 'settlement-label')
 
-                        
-
                         // virusDataWorld.forEach(i => {
                         //         const country = geoDataWorld.features.find(feature => feature.properties.ADMIN === i.country)
                         //         if (country) {
@@ -123,95 +123,107 @@ class Map extends React.Component {
                                         id: date.date,
                                         type: "fill",
                                         source: "countries",
+                                        // visibility: "none",
                                         paint: {
-                                                "fill-opacity": 0
+                                                "fill-opacity": date.date === "2020-01-22" ? .5 : 0
                                         }
-                                }, 'settlement-label')
+                                })
 
                                 this.setFill(date.date, date.date)
                         })
 
-
-
-                        // this.map.addLayer({
-                        //         id: '2020-04-12',
-                        //         type: "fill",
-                        //         source: "countries"
-                        // })
-
-                       
-
-                        // virusDataWorld[0].timeline.forEach(date => {
-                        //         if (date) {
-                        //                 this.map.addLayer({
-                        //                         id: date.date,
-                        //                         type: "fill",
-                        //                         source: "countries",
-                        //                         paint: {
-                        //                                 "fill-opacity": 1
-                        //                         }
-                        //                 })
-
-                        //                 this.setFill(date.date, date.date)
-
-                        //                 console.log(this.map.getLayer(date.date))
-                        //         }                   
-                        // })
+                        this.map.addLayer({
+                                id: "countries-fill",
+                                type: "fill",
+                                source: "countries",
+                                paint: {
+                                        "fill-color": "#ffe400",
+                                        "fill-opacity": [
+                                                "case",
+                                                ["boolean", ["feature-state", "hover"], false],
+                                                1,
+                                                .1
+                                        ]
+                                }
+                        }, 'settlement-label')
 
                 })
+
+                
+
+                this.map.on("mousemove", "countries-fill", (e) => {
+
+                        this.map.getCanvas().style.cursor = 'pointer'
+                        if (e.features.length > 0) {
+                                if(this.state.hoveredCountryId) {
+                                        this.map.setFeatureState({
+                                                source: 'countries',
+                                                id: this.state.hoveredCountryId
+                                        }, {hover: false})
+                                }
+                                this.setState({
+                                        hoveredCountryId: e.features[0].id 
+                                }, () => this.map.setFeatureState({
+                                        source: 'countries',
+                                        id: this.state.hoveredCountryId
+                                }, {hover: true}))
+                        }
+                })
                
+                this.map.on("mouseleave", "countries-fill", () => {
+                        if (this.state.hoveredCountryId >= 0) {
+                                this.map.setFeatureState({
+                                        source: "countries", id: this.state.hoveredCountryId
+                                }, { hover: false })
+                        }
 
-                // this.map.on("mousemove", "provinces-fills", (e) => {
+                        this.setState({
+                                hoveredCountryId: null
+                        })
+                })
 
-                //         this.map.getCanvas().style.cursor = 'pointer'
-                //         if (e.features.length > 0) {
-                //                 if (this.props.hoveredProvinceId >= 0) {
-                //                         this.map.setFeatureState({
-                //                                 source: "provinces", id: this.props.hoveredProvinceId
-                //                         }, { hover: false })
-                //                 }
+                this.map.on("mousemove", "provinces-fills", (e) => {
 
-                //                 this.props.mousemove(
-                //                         e.features[0].id,                                               // Identifier of the hovered province  
-                //                         [e.originalEvent.clientX, e.originalEvent.clientY],             // Position of the mouse cursor
-                //                         e.features[0].properties.NAME,                                  // Name of the hovered province
-                //                         e.features[0].properties.PROVINCE                               // Pinyin of the hovered province
-                //                 )
-                //                 this.map.setFeatureState({ source: "provinces", id: this.props.hoveredProvinceId }, {
-                //                         hover: true
-                //                 })
-                //         }
-                // })
+                        this.map.getCanvas().style.cursor = 'pointer'
+                        if (e.features.length > 0) {
+                                if (this.props.hoveredProvinceId >= 0) {
+                                        this.map.setFeatureState({
+                                                source: "provinces", id: this.props.hoveredProvinceId
+                                        }, { hover: false })
+                                }
 
-                // this.map.on("mouseleave", "provinces-fills", () => {
-                //         if (this.props.hoveredProvinceId >= 0) {
-                //                 this.map.setFeatureState({
-                //                         source: "provinces", id: this.props.hoveredProvinceId
-                //                 }, { hover: false })
-                //         }
+                                this.props.mousemove(
+                                        e.features[0].id,                                               // Identifier of the hovered province  
+                                        [e.originalEvent.clientX, e.originalEvent.clientY],             // Position of the mouse cursor
+                                        e.features[0].properties.NAME,                                  // Name of the hovered province
+                                        e.features[0].properties.PROVINCE                               // Pinyin of the hovered province
+                                )
+                                this.map.setFeatureState({ source: "provinces", id: this.props.hoveredProvinceId }, {
+                                        hover: true
+                                })
+                        }
+                })
 
-                //         this.props.mousemove(null)
+                this.map.on("mouseleave", "provinces-fills", () => {
+                        if (this.props.hoveredProvinceId >= 0) {
+                                this.map.setFeatureState({
+                                        source: "provinces", id: this.props.hoveredProvinceId
+                                }, { hover: false })
+                        }
 
-                // })
+                        this.props.mousemove(null)
 
-                // this.map.on("click", "provinces-fills", () => {
-                //         const locationData = this.props.data_china.locations
-                //         const data = locationData.find(item => item.province === this.props.hoveredProvincePinyin)
-
-                //         this.map.flyTo({
-                //                 center: [
-                //                         data.coordinates.longitude,
-                //                         data.coordinates.latitude
-                //                 ],
-                //                 speed: 0.3,
-                //                 zoom: 4,
-                //                 pitch: 60
-                //         })
-
-                // })
+                })
 
                 this.map.addControl(new mapboxgl.FullscreenControl());
                 
+                this.map.on("idle", (e) => {
+                        // if(this.map.areTilesLoaded()){console.log("done")}
+                        // console.log(e)
+                        // if(this.map.getLayer('2020-04-22')) {
+                                console.log('great')
+                        // }
+                })
         }
 
         setFill(layerId, properties) {
