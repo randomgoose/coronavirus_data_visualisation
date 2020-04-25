@@ -2,20 +2,27 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { changeDate } from '../../redux/action-creators'
 
+let timeline = []
+
 class TimeSlider extends React.Component {
 
         state = {
                 value: 0
         }
 
-        componentDidUpdate(prevProps, prevState){
+        changeHandler = (e) => {
+                e.preventDefault()
+                this.setState({
+                        value: e.target.value
+                }, () => {
+                        this.props.changeDate(timeline[this.state.value])
+                })
         }
 
         render() {
                 const timeDifference = Math.floor((new Date().getTime() - new Date("2020-01-22").getTime()) / (1000 * 3600 * 24)) // Calculate the difference between today and 2020-01-22
-                let timeline = []
                 for(let i=0;i<=timeDifference;i++) {
-                        let day = new Date(new Date("2020-01-22").getTime() + i*86400*1000).toLocaleString().split(",")[0].split("/").reverse().join("-")
+                        let day = new Date(new Date("2020-01-22").getTime() + i*86400*1000).toLocaleString('en-GB', { timeZone: 'UTC' }).split(",")[0].split("/").reverse().join("-")
                         timeline.push(day)
                 }
 
@@ -27,9 +34,7 @@ class TimeSlider extends React.Component {
                                    name="date-range"
                                    max={timeDifference}
                                    value={this.state.value}
-                                   onChange={e => { this.setState({value: e.target.value}, () => {
-                                           this.props.changeDate(timeline[this.state.value])
-                                   }) }}
+                                   onChange={this.changeHandler}
                                    className="TimeSlider__date-range" />
                         </div>
                 )

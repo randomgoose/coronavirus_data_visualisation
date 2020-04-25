@@ -41,7 +41,7 @@ export function fetchAllData() {
     }
 }
 
-export function changeDate(newDate) {
+export function changeDate(newDate, value) {
     return {
         type: "CHANGE_DATE",
         newDate
