@@ -105,37 +105,36 @@ class Map extends React.Component {
                         }, 'settlement-label')
 
 
+                        this.map.on("mousemove", "countries-fill", (e) => {
 
-                this.map.on("mousemove", "countries-fill", (e) => {
+                                this.map.getCanvas().style.cursor = 'pointer'
+                                if (e.features.length > 0) {
+                                        if(this.props.hoveredCountryId >= 0) {
+                                                this.map.setFeatureState({
+                                                        source: "countries", id: this.props.hoveredCountryId
+                                                }, { hover: false})
+                                        }
+                                        this.props.hoverCountry(e.features[0].id,
+                                                                e.features[0].properties.ISO_A3,
+                                                                e.features[0].properties.ADMIN,
+                                                                [e.originalEvent.clientX, e.originalEvent.clientY])
 
-                        this.map.getCanvas().style.cursor = 'pointer'
-                        if (e.features.length > 0) {
-                                if(this.props.hoveredCountryId >= 0) {
+                                        this.map.setFeatureState({
+                                                source: 'countries',
+                                                id: this.props.hoveredCountryId
+                                        }, { hover: true })
+                                }
+                        })
+                
+                        this.map.on("mouseleave", "countries-fill", () => {
+                                if (this.props.hoveredCountryId >= 0) {
                                         this.map.setFeatureState({
                                                 source: "countries", id: this.props.hoveredCountryId
-                                        }, { hover: false})
+                                        }, { hover: false })
                                 }
-                                this.props.hoverCountry(e.features[0].id,
-                                                        e.features[0].properties.ISO_A3,
-                                                        e.features[0].properties.ADMIN,
-                                                        [e.originalEvent.clientX, e.originalEvent.clientY])
 
-                                this.map.setFeatureState({
-                                        source: 'countries',
-                                        id: this.props.hoveredCountryId
-                                }, { hover: true })
-                        }
-                })
-               
-                this.map.on("mouseleave", "countries-fill", () => {
-                        if (this.props.hoveredCountryId >= 0) {
-                                this.map.setFeatureState({
-                                        source: "countries", id: this.props.hoveredCountryId
-                                }, { hover: false })
-                        }
-
-                        this.props.hoverCountry(null, null, null)
-                })
+                                this.props.hoverCountry(null, null, null)
+                        })
 
                 // this.map.on("mousemove", "provinces-fills", (e) => {
                 //
@@ -174,6 +173,19 @@ class Map extends React.Component {
 
                 this.map.on("idle", (e) => {
                         this.props.layersFinishLoading()
+                })
+
+                this.map.on("click", 'countries-fill', (e) => {
+                        console.log(e.lngLat.wrap())
+                        this.map.flyTo({
+                                center: [e.lngLat.wrap().lng, e.lngLat.wrap().lat],
+                                zoom: 9,
+                                speed: 0.2,
+                                curve: 1,
+                                easing(t) {
+                                  return t;
+                                }
+                              });
                 })
 
 
