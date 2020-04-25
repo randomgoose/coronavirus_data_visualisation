@@ -8,6 +8,9 @@ class TimeSlider extends React.Component {
                 value: 0
         }
 
+        componentDidUpdate(prevProps, prevState){
+        }
+
         render() {
                 const timeDifference = Math.floor((new Date().getTime() - new Date("2020-01-22").getTime()) / (1000 * 3600 * 24)) // Calculate the difference between today and 2020-01-22
                 let timeline = []
@@ -18,16 +21,16 @@ class TimeSlider extends React.Component {
 
                 return (
                         <div className="TimeSlider">
-                                <input type="range"
-                                       step={1}
-                                       name="date-range"
-                                       max={timeDifference}
-                                       value={this.state.value}
-                                       onChange={e => { this.setState({value: e.target.value}, () => {
-                                               this.props.changeDate(timeline[this.state.value])
-                                       }) }}
-                                       className="TimeSlider__date-range" />
-                                <span className="TimeSlider__date-display">{this.props.date}</span>
+                            <span className="TimeSlider__date-display">{this.props.date}</span>
+                            <input type="range"
+                                   step={1}
+                                   name="date-range"
+                                   max={timeDifference}
+                                   value={this.state.value}
+                                   onChange={e => { this.setState({value: e.target.value}, () => {
+                                           this.props.changeDate(timeline[this.state.value])
+                                   }) }}
+                                   className="TimeSlider__date-range" />
                         </div>
                 )
         }

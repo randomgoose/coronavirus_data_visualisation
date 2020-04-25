@@ -47,3 +47,26 @@ export function changeDate(newDate) {
         newDate
     }
 }
+
+export function layersFinishLoading() {
+    return {
+        type: "LAYERS_FINISH_LOADING"
+    }
+}
+
+export function loadLayers(progress) {
+    return {
+        type: "LOAD_LAYERS",
+        progress
+    }
+}
+
+export function hoverCountry(hoveredCountryId, hoveredCountryCode, hoveredCountryName, coordinates) {
+    return {
+        type: "HOVER_COUNTRY",
+        coordinates,
+        hoveredCountryId,
+        hoveredCountryName,
+        hoveredCountryCode
+    }
+}

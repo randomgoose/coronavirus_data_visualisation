@@ -9,36 +9,46 @@
     border-radius: .6rem;
     margin: 3rem;
     text-align: center;
-    
-    & h1 {
-        // background-color: red;
-        padding: 2rem;
-        font-size: 2rem;
+    transition: all 2s;
+
+    &.off {
+        width: 4rem;
+        height: 4rem;
     }
 
     &__section {
-        &:not(:first-child):not(:last-child) {
-            border-top: 1px solid $color-grey-light;
-            border-bottom: 1px solid $color-grey-light;
+        &:not(:last-child) {
+            border-bottom: 1px solid $color-grey-light-1;
+        }
+
+        &:first-child {
+            display: flex;
+            padding: 2.4rem;
+            font-size: 2.4rem;
+        }
+
+        & h1 {
+            margin-left: 2rem;
+            font-weight: bold;
+        }
+
+        &.grey {
+            background-color: $color-grey-light-2;
         }
     }
 
     &__subtitle {
         text-align: left;
-        //padding: 4rem;
-        margin: 2rem 4rem 0 4rem;
+        padding: 2.4rem;
         font-size: 1.8rem;
         font-weight: bold;
-        //display: inline-block;
-        //background-color: red;
     }
 
     &__data-group {
         height: 100%;
         display: grid;
-        grid-template-columns: 50% 50%;
-        padding: 2rem;
-
+        grid-template-columns: calc(100% / 3) calc(100% / 3) calc(100% / 3);
+        margin: 2.4rem;
 
         & .Data {
             flex: 0 0 25%;

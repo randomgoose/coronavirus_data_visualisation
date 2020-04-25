@@ -1,0 +1,29 @@
+.ProgressBar {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  z-index: 1000;
+  background-color: #333;
+
+  &__track {
+    display: inline-block;
+    width: 50%;
+    height: 1rem;
+    z-index: 9999;
+    position: absolute;
+    background-color: #444;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &__progress {
+    display: inline-block;
+    position: absolute;
+    z-index: 10000;
+    width: 0;
+    height: 100%;
+    background-color: green;
+    //transition: all 0s;
+  }
+}

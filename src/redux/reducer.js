@@ -3,21 +3,34 @@ const intialState = {
     coordinates: null,
     hoveredProvinceName: null,
     hoveredProvincePinyin: null,
+    hoveredCountryId: null,
+    hoveredCountryCode: null,
+    hoveredCountryName: null,
     data_china: {},
     data_world: {},
-    date: "2020-01-22"
+    date: "2020-01-22",
+    layersLoaded: false,
+    progress: ""
 }
 
 export function reducer(state=intialState, action) {
     switch(action.type) {
-        case "MOUSE_MOVE":
+        case "HOVER_COUNTRY":
             return {
                 ...state,
-                hoveredProvinceId: action.hoveredProvinceId,
-                coordinates: action.coordinates,
-                hoveredProvinceName: action.hoveredProvinceName,
-                hoveredProvincePinyin: action.hoveredProvincePinyin
+                hoveredCountryId: action.hoveredCountryId,
+                hoveredCountryCode: action.hoveredCountryCode,
+                hoveredCountryName: action.hoveredCountryName,
+                coordinates: action.coordinates
             }
+        // case "MOUSE_MOVE":
+        //     return {
+        //         ...state,
+        //         hoveredProvinceId: action.hoveredProvinceId,
+        //         coordinates: action.coordinates,
+        //         hoveredProvinceName: action.hoveredProvinceName,
+        //         hoveredProvincePinyin: action.hoveredProvincePinyin
+        //     }
         case "FETCH_DATA":
             return {
                 ...state,
@@ -32,6 +45,16 @@ export function reducer(state=intialState, action) {
             return {
                 ...state,
                 date: action.newDate
+            }
+        case "LAYERS_FINISH_LOADING":
+            return {
+                ...state,
+                layersLoaded: true
+            }
+        case "LOAD_LAYERS":
+            return {
+                ...state,
+                progress: action.progress
             }
         default:
             return state
