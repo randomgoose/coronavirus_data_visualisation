@@ -11,6 +11,15 @@ class Tooltip extends React.Component {
 
     hoveredCountryTimeline
     dailyCountryData = 0
+    yesterdayCountryData = 0
+
+    countryConfirmed = 0
+    countryDeaths = 0
+    countryRecovered = 0
+
+    diffConfirmed = 0
+    diffDeaths = 0
+    diffRecovered = 0
 
     render() {
         if (this.props.hoveredCountryId) {
@@ -18,6 +27,14 @@ class Tooltip extends React.Component {
             if (hoveredCountry) {
                 this.hoveredCountryTimeline = hoveredCountry.timeline
                 this.dailyCountryData = this.hoveredCountryTimeline.find(date => date.date === this.props.date)
+                this.yesterdayCountryData = this.hoveredCountryTimeline[this.hoveredCountryTimeline.indexOf(this.dailyCountryData) - 1]
+                // console.log(this.yesterdayCountryData)
+
+                if (this.yesterdayCountryData) {
+                    this.diffConfirmed = this.dailyCountryData.confirmed - this.yesterdayCountryData.confirmed
+                    this.diffRecovered = this.dailyCountryData.recovered - this.yesterdayCountryData.recovered
+                    this.diffDeaths = this.dailyCountryData.deaths - this.yesterdayCountryData.deaths
+                }
             }
         }
 
@@ -33,9 +50,9 @@ class Tooltip extends React.Component {
                 <Chart data={this.hoveredCountryTimeline ? this.hoveredCountryTimeline : []}/>
 
                 <div className="Tooltip__data-group">
-                    <Data title="累计确诊人数" trend="新增 +12" number={this.dailyCountryData.confirmed ? this.dailyCountryData.confirmed : 0}/>
-                    <Data title="累计死亡人数" trend="新增 +12" number={this.dailyCountryData.deaths ? this.dailyCountryData.deaths : 0}/>
-                    <Data title="累计治愈人数" trend="新增 +12" number={this.dailyCountryData.recovered ? this.dailyCountryData.recovered : 0}/>
+                    <Data color={"red"} title="累计确诊人数" trend={this.diffConfirmed >= 0 ? "增加 +" + this.diffConfirmed : "减少 " + Math.abs(this.diffConfirmed)} number={this.dailyCountryData.confirmed ? this.dailyCountryData.confirmed : 0}/>
+                    <Data color={"black"} title="累计死亡人数" trend={this.diffDeaths >= 0 ? "增加 +" + this.diffDeaths : "减少 " + Math.abs(this.diffDeaths)} number={this.dailyCountryData.deaths ? this.dailyCountryData.deaths : 0}/>
+                    <Data color={"blue"} title="累计治愈人数" trend={this.diffRecovered >= 0 ? "增加 +" + this.diffRecovered : "减少 " + Math.abs(this.diffRecovered)} number={this.dailyCountryData.recovered ? this.dailyCountryData.recovered : 0}/>
                 </div>
                 {/* <div>{ this.props.data_china.latest.confirmed }</div> */}
             </div>

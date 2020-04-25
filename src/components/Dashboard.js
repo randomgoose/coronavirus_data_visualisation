@@ -28,9 +28,6 @@ class Dashboard extends React.Component {
     diffDeathRate = "0"
     diffRecoveredRate = "0"
 
-    componentDidMount() {
-    }
-
     render() {
         this.dailyGlobalData = globalData.timeline.find(date => date.date === this.props.date)
         this.diffConfirmed = this.dailyGlobalData.confirmed - this.globalConfirmed
