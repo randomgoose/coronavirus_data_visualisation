@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import geoDataChina from "../data/china-province.json"
 import geoDataWorld from "../data/countries.json"
 import virusDataWorld from "../data/world_timeline.json"
-import ProgressBar from "./ProgressBar";
+
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
 let percentage = 0;
@@ -66,6 +66,18 @@ class Map extends React.Component {
                     generateId: true
                 })
 
+            // this.map.addLayer({
+            //         "id": "country-extrusion",
+            //         "type": "fill-extrusion",
+            //         "source": "countries",
+            //         "paint": {
+            //             "fill-extrusion-height": 160000,
+            //             "fill-extrusion-base": 0,
+            //             "fill-extrusion-color": "grey",
+            //             'fill-extrusion-opacity': 1
+            //         }
+            //     })
+
                 virusDataWorld[0].timeline.forEach(date => {
                     this.map.addLayer({
                         id: date.date,
@@ -104,6 +116,8 @@ class Map extends React.Component {
                         ]
                     }
                 }, 'settlement-label')
+
+
 
 
                 this.map.on("mousemove", "countries-fill", (e) => {

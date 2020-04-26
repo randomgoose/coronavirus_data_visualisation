@@ -9,7 +9,7 @@ import {connect} from 'react-redux'
 import {fetchData, fetchAllData} from './redux/action-creators'
 import virusDataChina from './data/china_timeline'
 import virusDataWorld from './data/world_timeline'
-import ProgressBar from "./components/ProgressBar";
+import ProgressAnimation from "./components/ProgressAnimation";
 
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
@@ -25,7 +25,7 @@ class App extends React.Component {
 
         return (
             <>
-                {/*{ this.props.layersLoaded ? null : <ProgressBar />}*/}
+                { this.props.layersLoaded ? null : <ProgressAnimation />}
                 <Dashboard date={this.props.date}/>
                 {/* <Slider defaultValue={30} /> */}
                 <Tooltip coordinates={this.props.coordinates} data={virusDataWorld}/>
