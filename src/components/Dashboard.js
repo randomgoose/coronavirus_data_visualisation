@@ -67,7 +67,7 @@ class Dashboard extends React.Component {
                             <div className="Dashboard__subtitle">世界数据</div>
                             <div className="Dashboard__data-group">
                                 <Data trend={this.diffConfirmed >= 0 ? "增加 +" + this.diffConfirmed : "减少 " + Math.abs(this.diffConfirmed)} title="累计确诊人数" number={this.dailyGlobalData.confirmed} color="red"/>
-                                <Data trend={this.diffConfirmedLeft >= 0 ? "增加 +" + this.diffConfirmedLeft : "减少 " + Math.abs(this.diffConfirmedLeft)} title="现存确诊人数" number={this.globalConfirmed - this.globalDeaths - this.globalRecovered} color="orange"/>
+                                <Data trend={this.diffConfirmedLeft >= 0 ? "增加 +" + this.diffConfirmedLeft : "减少 " + Math.abs(this.diffConfirmedLeft)} title="现存确诊人数" number={(this.globalConfirmed - this.globalDeaths - this.globalRecovered)} color="orange"/>
                                 <Data trend={this.diffDeaths >= 0 ? "增加 +" + this.diffDeaths : "减少 " + Math.abs(this.diffDeaths)} title="累计死亡人数" number={this.dailyGlobalData.deaths} color="black"/>
                                 <Data trend={this.diffDeathRate[0] === "-" ? "减少 " + this.diffDeathRate.split("-")[1] : "增加 +" + this.diffDeathRate} title="死亡率" number={this.deathRate} color="blue"/>
                                 <Data trend={this.diffRecoveredRate[0] === "-" ? "减少 " + this.diffRecoveredRate.split("-")[1] : "增加 +" + this.diffRecoveredRate} title="治愈率" number={this.recoveredRate} color="black"/>
