@@ -209,13 +209,31 @@ class Map extends React.Component {
         });
     }
 
-
     render() {
+
+        const renderLegendKeys = (stop, i) => {
+                return (
+                  <div key={i} className='txt-s'>
+                    <span className='mr6 round-full w12 h12 inline-block align-middle' style={{ backgroundColor: stop[1] }} />
+                    <span>{`${stop[0].toLocaleString()}`}</span>
+                  </div>
+                );
+              }
+
+              
         return (
+                <>
             <div className="Map">
                 <div className="absolute top right left bottom" ref={this.mapRef}></div>
                 <div className=""></div>
             </div>
+            <div className="bg-white absolute bottom right mr12 mb24 py12 px12 shadow-darken10 round z1 wmax180">
+                <div className='mb6'>
+                <h2 className="txt-bold txt-s block">图例</h2>
+                </div>
+                {stops.map(renderLegendKeys)}
+                </div>
+            </>
         );
     }
 }
