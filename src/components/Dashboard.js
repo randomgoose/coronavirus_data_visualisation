@@ -32,19 +32,22 @@ class Dashboard extends React.Component {
 
         this.dailyGlobalData = globalData.timeline.find(date => date.date === this.props.date)
         console.log("GlobalData", this.dailyGlobalData)
-        this.diffConfirmed = this.dailyGlobalData.confirmed - this.globalConfirmed
-        this.diffRecovered = this.dailyGlobalData.recovered - this.globalRecovered
-        this.diffDeaths = this.dailyGlobalData.deaths - this.globalDeaths
-        this.diffDeathRate = (((this.dailyGlobalData.deaths / this.dailyGlobalData.confirmed) * 100).toFixed(2)  - this.deathRate.split("%")[0]).toFixed(2) + "%"
-        this.diffRecoveredRate = (((this.dailyGlobalData.recovered / this.dailyGlobalData.confirmed) * 100).toFixed(2)  - this.recoveredRate.split("%")[0]).toFixed(2) + "%"
-        this.diffConfirmedLeft = (this.dailyGlobalData.confirmed - this.dailyGlobalData.deaths - this.dailyGlobalData.recovered) - this.globalConfirmedLeft
+        if (this.dailyGlobalData) {
+            this.diffConfirmed = this.dailyGlobalData.confirmed - this.globalConfirmed
+            this.diffRecovered = this.dailyGlobalData.recovered - this.globalRecovered
+            this.diffDeaths = this.dailyGlobalData.deaths - this.globalDeaths
+            this.diffDeathRate = (((this.dailyGlobalData.deaths / this.dailyGlobalData.confirmed) * 100).toFixed(2)  - this.deathRate.split("%")[0]).toFixed(2) + "%"
+            this.diffRecoveredRate = (((this.dailyGlobalData.recovered / this.dailyGlobalData.confirmed) * 100).toFixed(2)  - this.recoveredRate.split("%")[0]).toFixed(2) + "%"
+            this.diffConfirmedLeft = (this.dailyGlobalData.confirmed - this.dailyGlobalData.deaths - this.dailyGlobalData.recovered) - this.globalConfirmedLeft
 
-        this.globalConfirmed = this.dailyGlobalData.confirmed
-        this.globalDeaths = this.dailyGlobalData.deaths
-        this.globalRecovered = this.dailyGlobalData.recovered
-        this.globalConfirmedLeft = this.dailyGlobalData.confirmed - this.dailyGlobalData.deaths - this.dailyGlobalData.recovered
-        this.deathRate = ((this.globalDeaths / this.globalConfirmed) * 100).toFixed(2) + "%"
-        this.recoveredRate = ((this.globalRecovered / this.globalConfirmed) * 100).toFixed(2) + "%"
+            this.globalConfirmed = this.dailyGlobalData.confirmed
+            this.globalDeaths = this.dailyGlobalData.deaths
+            this.globalRecovered = this.dailyGlobalData.recovered
+            this.globalConfirmedLeft = this.dailyGlobalData.confirmed - this.dailyGlobalData.deaths - this.dailyGlobalData.recovered
+            this.deathRate = ((this.globalDeaths / this.globalConfirmed) * 100).toFixed(2) + "%"
+            this.recoveredRate = ((this.globalRecovered / this.globalConfirmed) * 100).toFixed(2) + "%"
+        }
+
 
         return (
             <div className={`Dashboard ${this.state.on ? "on" : "off"}`}>
@@ -66,12 +69,12 @@ class Dashboard extends React.Component {
                         <div className="Dashboard__section grey">
                             <div className="Dashboard__subtitle">世界数据</div>
                             <div className="Dashboard__data-group">
-                                <Data trend={this.diffConfirmed >= 0 ? "增加 +" + this.diffConfirmed : "减少 " + Math.abs(this.diffConfirmed)} title="累计确诊人数" number={this.dailyGlobalData.confirmed} color="red"/>
-                                <Data trend={this.diffConfirmedLeft >= 0 ? "增加 +" + this.diffConfirmedLeft : "减少 " + Math.abs(this.diffConfirmedLeft)} title="现存确诊人数" number={(this.globalConfirmed - this.globalDeaths - this.globalRecovered)} color="orange"/>
-                                <Data trend={this.diffDeaths >= 0 ? "增加 +" + this.diffDeaths : "减少 " + Math.abs(this.diffDeaths)} title="累计死亡人数" number={this.dailyGlobalData.deaths} color="black"/>
-                                <Data trend={this.diffDeathRate[0] === "-" ? "减少 " + this.diffDeathRate.split("-")[1] : "增加 +" + this.diffDeathRate} title="死亡率" number={this.deathRate} color="blue"/>
-                                <Data trend={this.diffRecoveredRate[0] === "-" ? "减少 " + this.diffRecoveredRate.split("-")[1] : "增加 +" + this.diffRecoveredRate} title="治愈率" number={this.recoveredRate} color="black"/>
-                                <Data trend={this.diffRecovered >= 0 ? "增加 +" + this.diffRecovered : "减少 " + Math.abs(this.diffRecovered)} title="累计治愈人数" number={this.dailyGlobalData.recovered} color="blue"/>
+                                <Data trend={this.diffConfirmed >= 0 ? "增加 +" + this.diffConfirmed : "减少 " + Math.abs(this.diffConfirmed)} title="累计确诊人数" number={this.dailyGlobalData ? this.dailyGlobalData.confirmed : "暂无数据"} color="red"/>
+                                <Data trend={this.diffConfirmedLeft >= 0 ? "增加 +" + this.diffConfirmedLeft : "减少 " + Math.abs(this.diffConfirmedLeft)} title="现存确诊人数" number={this.dailyGlobalData ? (this.globalConfirmed - this.globalDeaths - this.globalRecovered) : "暂无数据"} color="orange"/>
+                                <Data trend={this.diffDeaths >= 0 ? "增加 +" + this.diffDeaths : "减少 " + Math.abs(this.diffDeaths)} title="累计死亡人数" number={this.dailyGlobalData ? this.dailyGlobalData.deaths : "暂无数据"} color="black"/>
+                                <Data trend={this.diffDeathRate[0] === "-" ? "减少 " + this.diffDeathRate.split("-")[1] : "增加 +" + this.diffDeathRate} title="死亡率" number={this.dailyGlobalData ? this.deathRate : "暂无数据"} color="blue"/>
+                                <Data trend={this.diffRecoveredRate[0] === "-" ? "减少 " + this.diffRecoveredRate.split("-")[1] : "增加 +" + this.diffRecoveredRate} title="治愈率" number={this.dailyGlobalData ? this.recoveredRate : "暂无数据"} color="black"/>
+                                <Data trend={this.diffRecovered >= 0 ? "增加 +" + this.diffRecovered : "减少 " + Math.abs(this.diffRecovered)} title="累计治愈人数" number={this.dailyGlobalData ? this.dailyGlobalData.recovered : "暂无数据"} color="blue"/>
                             </div>
                         </div>
 
