@@ -1,18 +1,35 @@
 .Dashboard {
     position: absolute;
     bottom: 0;
-    // width: 30rem;
+    width: 64rem;
     // height: 30rem;
     z-index: 999;
     background-color: #fff;
     box-shadow: 0 0 1rem black;
-    border-radius: .6rem;
-    margin: 3rem;
+    border-radius: .6rem .6rem 0 0;
+    margin-left: 3rem;
     text-align: center;
     transition: all 2s;
 
+    &__toggle {
+        // display: inline-block;
+        position: absolute;
+        text-align: center;
+        background: white;
+        height: 2rem;
+        width: 8rem;
+        right: 4rem;
+        top: -2rem;
+        border-radius: .6rem .6rem 0 0;
+        
+        &:focus {
+            outline: 0;
+        }
+        // padding: 2rem;
+    }
+
     &.off {
-        width: 4rem;
+        // width: rem;
         height: 4rem;
     }
 
@@ -23,7 +40,6 @@
 
         &:first-child {
             display: flex;
-            padding: 2.4rem;
             font-size: 2.4rem;
         }
 

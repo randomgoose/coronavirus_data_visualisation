@@ -6,6 +6,8 @@ import {connect} from 'react-redux'
 import geoDataChina from "../data/china-province.json"
 import geoDataWorld from "../data/countries.json"
 import virusDataWorld from "../data/world_timeline.json"
+import eventsData from "../data/events.json"
+import { centerOfMass } from '@turf/turf'
 
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
@@ -33,6 +35,12 @@ class Map extends React.Component {
                 i.timeline.forEach(date => {
                     country.properties[`${date.date}`] = date.confirmed - date.deaths - date.recovered
                 })
+            }
+
+            const event = eventsData.find(event => event.country_code === i.country_code)
+            if (event) {
+                console.log(this.map.getLayer('country-label'))
+                console.log(centerOfMass([[1, 1]]))
             }
         })
 

@@ -4,7 +4,7 @@ import globalData from '../data/global_timeline.json'
 import TimeSlider from './TimeSlider/TimeSlider'
 import Chart from "./Chart/Chart";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faVirus, faChartLine} from '@fortawesome/free-solid-svg-icons'
+import {faVirus, faChartLine, faChevronDown, faChevronUp} from '@fortawesome/free-solid-svg-icons'
 
 class Dashboard extends React.Component {
     state = {
@@ -51,12 +51,14 @@ class Dashboard extends React.Component {
 
         return (
             <div className={`Dashboard ${this.state.on ? "on" : "off"}`}>
-                <button onClick={ () => this.setState({ on: !this.state.on }) }>Toggle</button>
+                <button className={"Dashboard__toggle"} onClick={ () => this.setState({ on: !this.state.on }) }>
+                                <FontAwesomeIcon icon={this.state.on ? faChevronDown : faChevronUp} size="lg"/>
+                </button>
                 {this.state.on ? (
                     <>
                         <div className="Dashboard__section">
                             <div className="Dashboard__logo">
-                                <FontAwesomeIcon icon={faChartLine} size="lg"/>
+                                {/* <FontAwesomeIcon icon={faChartLine} size="lg"/> */}
                             </div>
                             <h1 className="Dashboard__title">2019年新型冠状病毒疫情地图</h1>
                         </div>
