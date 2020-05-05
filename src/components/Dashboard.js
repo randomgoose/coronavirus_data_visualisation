@@ -51,16 +51,12 @@ class Dashboard extends React.Component {
 
         return (
             <div className={`Dashboard ${this.state.on ? "on" : "off"}`}>
-                <button className={"Dashboard__toggle"} onClick={ () => this.setState({ on: !this.state.on }) }>
-                                <FontAwesomeIcon icon={this.state.on ? faChevronDown : faChevronUp} size="lg"/>
-                </button>
                 {this.state.on ? (
                     <>
                         <div className="Dashboard__section">
                             <div className="Dashboard__logo">
                                 {/* <FontAwesomeIcon icon={faChartLine} size="lg"/> */}
                             </div>
-                            <h1 className="Dashboard__title">2019年新型冠状病毒疫情地图</h1>
                         </div>
 
                         <div className="Dashboard__section">

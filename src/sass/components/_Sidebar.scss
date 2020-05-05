@@ -1,0 +1,76 @@
+.Sidebar__nav {
+  height: 100vh;
+  background: $color-grey-light-2;
+  position: relative;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border-right: 1px solid $color-grey-light-1;
+  float: left;
+  left: 0;
+
+  & .Item {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    position: relative;
+
+    &__icon {
+      display: inline-block;
+      margin: .5rem;
+    }
+
+    &__title {
+      display: inline-block;
+      margin: .5rem;
+      font-size: 1.6rem;
+    }
+
+    &.on {
+      background: $color-white;
+
+      &::after {
+        content: "";
+        position: absolute;
+        display: inline-block;
+        width: .2rem;
+        height: 100%;
+        background: red;
+        left: 0;
+      }
+    }
+
+    &:hover {
+      background: $color-grey-light-1;
+    }
+
+    &:active {
+      background: $color-grey-light-2;
+    }
+
+    &:focus {
+      outline: 0;
+    }
+  }
+}
+
+.Sidebar__panel {
+  //width: 2vw;
+  height: 100vh;
+  background: $color-white;
+  position: relative;
+  float: left;
+  z-index: 1000;
+
+  &__title {
+    font-weight: bold;
+    color: #333;
+    font-size: 2.4rem;
+    padding: 2rem;
+    border-bottom: 1px solid $color-grey-light-1;
+  }
+}

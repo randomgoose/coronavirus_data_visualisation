@@ -7,7 +7,7 @@ import geoDataChina from "../data/china-province.json"
 import geoDataWorld from "../data/countries.json"
 import virusDataWorld from "../data/world_timeline.json"
 import eventsData from "../data/events.json"
-import { centerOfMass } from '@turf/turf'
+import { centerOfMass, polygon } from '@turf/turf'
 
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
@@ -28,7 +28,6 @@ class Map extends React.Component {
     mapRef = React.createRef()
 
     componentDidUpdate() {
-
         virusDataWorld.forEach(i => {
             const country = geoDataWorld.features.find(feature => feature.properties.ISO_A3 === i.country_code)
             if (country) {
@@ -37,11 +36,11 @@ class Map extends React.Component {
                 })
             }
 
-            const event = eventsData.find(event => event.country_code === i.country_code)
-            if (event) {
-                console.log(this.map.getLayer('country-label'))
-                console.log(centerOfMass([[1, 1]]))
-            }
+            // const event = eventsData.find(event => event.country_code === i.country_code)
+            // if (event) {
+            //     console.log(this.map.getLayer('country-label'))
+            //     console.log(centerOfMass([[1, 1]]))
+            // }
         })
 
         virusDataWorld[0].timeline.forEach(date => {
@@ -50,6 +49,7 @@ class Map extends React.Component {
         })
 
         this.map.setPaintProperty(this.props.date, 'fill-opacity', 1)
+        
     }
 
     componentDidMount() {
@@ -99,6 +99,27 @@ class Map extends React.Component {
 
                     this.setFill(date.date, date.date)
                 })
+                
+
+                geoDataWorld.features.forEach(feature => {
+                    if (feature.geometry.type === "Polygon") {
+                        feature.properties.LNGLAT = centerOfMass(polygon(feature.geometry.coordinates)).geometry.coordinates
+                    } else if (feature.geometry.type === "MultiPolygon") {
+                        feature.properties.LNGLAT = centerOfMass(polygon(feature.geometry.coordinates[0])).geometry.coordinates
+                    }
+                    
+                    if (feature.properties.LNGLAT) {
+                        const marker = new mapboxgl.Marker()
+                        .setLngLat(feature.properties.LNGLAT)
+                        .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+                            .setHTML('<h3>' + "YES" + '</h3><p>' + "YES" + '</p>'))
+                        .addTo(this.map)
+                    }
+                    
+                    if (feature.properties.ADMIN === "China") {
+                        console.log("CHINA", feature.properties.LNGLAT)
+                    }
+                })
 
                 this.map.addLayer({
                     id: "countries-line",
@@ -124,8 +145,6 @@ class Map extends React.Component {
                         ]
                     }
                 }, 'settlement-label')
-
-
 
 
                 this.map.on("mousemove", "countries-fill", (e) => {
@@ -194,13 +213,14 @@ class Map extends React.Component {
                 // })
                 //
                 this.map.addControl(new mapboxgl.FullscreenControl());
+                this.map.addControl(new mapboxgl.NavigationControl());
 
                 this.map.on("idle", (e) => {
                     this.props.layersFinishLoading()
                 })
 
                 this.map.on("click", 'countries-fill', (e) => {
-                    console.log(e.lngLat.wrap())
+                    console.log(e.features)
                     this.map.flyTo({
                         center: [e.lngLat.wrap().lng, e.lngLat.wrap().lat],
                         zoom: 9,
@@ -211,6 +231,8 @@ class Map extends React.Component {
                         }
                     });
                 })
+
+                
 
 
                 // this.map.on("data", () => {
