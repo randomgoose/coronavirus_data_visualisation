@@ -70,3 +70,9 @@ export function hoverCountry(hoveredCountryId, hoveredCountryCode, hoveredCountr
         hoveredCountryCode
     }
 }
+
+export function focusOnCountry (focusedCountryId, focusedCountryCode, focusedCountryName) {
+    return {
+        type: "FOCUS_ON_COUNTRY"
+    }
+}

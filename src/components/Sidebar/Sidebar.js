@@ -5,6 +5,7 @@ import {faBookmark, faChartLine, faNewspaper} from '@fortawesome/free-solid-svg-
 import Dashboard from "../Dashboard";
 import { connect } from 'react-redux'
 import Bookmark from "../Bookmark";
+import News from '../News/News'
 
 class Sidebar extends React.Component {
 
@@ -25,7 +26,7 @@ class Sidebar extends React.Component {
                 panelContent = <Dashboard date={this.props.date}/>
                 break
             case "news":
-                panelContent = null
+                panelContent = <News />
                 break
             case "bookmark":
                 panelContent = <Bookmark />

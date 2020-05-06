@@ -26,7 +26,7 @@ class App extends React.Component {
 
         return (
             <>
-                { this.props.layersLoaded ? null : <ProgressAnimation />}
+                { this.props.layersLoaded ? null : <ProgressAnimation fs={true}/>}
                 <Sidebar />
                 {/*<Dashboard date={this.props.date}/>*/}
                 {/* <Slider defaultValue={30} /> */}

@@ -269,7 +269,6 @@ class Map extends React.Component {
                 <>
             <div className="Map">
                 <div className="absolute top right left bottom" ref={this.mapRef}></div>
-                <div className=""></div>
             </div>
             <div className="bg-white absolute bottom right mr12 mb24 py12 px12 shadow-darken10 round z1 wmax180">
                 <div className='mb6'>
