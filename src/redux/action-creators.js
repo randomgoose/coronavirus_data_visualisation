@@ -71,8 +71,14 @@ export function hoverCountry(hoveredCountryId, hoveredCountryCode, hoveredCountr
     }
 }
 
-export function focusOnCountry (focusedCountryId, focusedCountryCode, focusedCountryName) {
+export function focusOnCountry (focusedCountryId, focusedCountryCode, focusedCountryName, focusedCountryCoordinates) {
     return {
-        type: "FOCUS_ON_COUNTRY"
+        type: "FOCUS_ON_COUNTRY",
+        focusedCountry: {
+            id: focusedCountryId,
+            code: focusedCountryCode,
+            name: focusedCountryName,
+            coordinates: focusedCountryCoordinates
+        }
     }
 }

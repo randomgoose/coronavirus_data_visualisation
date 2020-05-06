@@ -10,7 +10,8 @@ const intialState = {
     data_world: {},
     date: "2020-01-22",
     layersLoaded: false,
-    progress: ""
+    progress: "",
+    focusedCountry: {}
 }
 
 export function reducer(state=intialState, action) {
@@ -55,6 +56,11 @@ export function reducer(state=intialState, action) {
             return {
                 ...state,
                 progress: action.progress
+            }
+        case "FOCUS_ON_COUNTRY":
+            return {
+                ...state,
+                focusedCountry: action.focusedCountry
             }
         default:
             return state

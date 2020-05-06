@@ -1,7 +1,7 @@
 import React from 'react';
 import mapboxgl from 'mapbox-gl';
 // import geoDataChina from '../data/china-province.geojson'
-import {mousemove, layersFinishLoading, loadLayers, hoverCountry} from '../redux/action-creators'
+import {mousemove, layersFinishLoading, loadLayers, hoverCountry, focusOnCountry} from '../redux/action-creators'
 import {connect} from 'react-redux'
 import geoDataChina from "../data/china-province.json"
 import geoDataWorld from "../data/countries.json"
@@ -35,12 +35,6 @@ class Map extends React.Component {
                     country.properties[`${date.date}`] = date.confirmed - date.deaths - date.recovered
                 })
             }
-
-            // const event = eventsData.find(event => event.country_code === i.country_code)
-            // if (event) {
-            //     console.log(this.map.getLayer('country-label'))
-            //     console.log(centerOfMass([[1, 1]]))
-            // }
         })
 
         virusDataWorld[0].timeline.forEach(date => {
@@ -136,12 +130,17 @@ class Map extends React.Component {
                     type: "fill",
                     source: "countries",
                     paint: {
-                        "fill-color": "#ffe400",
+                        "fill-color": [
+                            "case",
+                            ["boolean", ["feature-state", "focused"], false],
+                            "#ffe400",
+                            "#ff0000"
+                        ],
                         "fill-opacity": [
                             "case",
                             ["boolean", ["feature-state", "hover"], false],
                             .1,
-                            0
+                            1
                         ]
                     }
                 }, 'settlement-label')
@@ -214,22 +213,41 @@ class Map extends React.Component {
                 //
                 this.map.addControl(new mapboxgl.FullscreenControl());
                 this.map.addControl(new mapboxgl.NavigationControl());
+                this.map.getSource('countries').setData(geoDataWorld);
 
                 this.map.on("idle", (e) => {
                     this.props.layersFinishLoading()
                 })
 
                 this.map.on("click", 'countries-fill', (e) => {
-                    console.log(e.features)
-                    this.map.flyTo({
-                        center: [e.lngLat.wrap().lng, e.lngLat.wrap().lat],
-                        zoom: 9,
-                        speed: 0.2,
-                        curve: 1,
-                        easing(t) {
-                            return t;
+                    if (e.features.length > 0) {
+                        if (this.props.focusedCountry.id >= 0) {
+                            this.map.setFeatureState({
+                                source: 'countries',
+                                id: this.props.focusedCountry.id
+                            }, {focused: false})
                         }
-                    });
+
+                        this.props.focusOnCountry(e.features[0].id,
+                                            e.features[0].properties.ISO_A3,
+                                            e.features[0].properties.ADMIN,
+                                            e.features[0].properties.LNGLAT)
+
+                        this.map.setFeatureState({
+                            source: 'countries',
+                            id: this.props.focusedCountry.id
+                        }, {focused: true})
+                    }
+                    // console.log(e.features)
+                    // this.map.flyTo({
+                    //     center: [e.lngLat.wrap().lng, e.lngLat.wrap().lat],
+                    //     zoom: 9,
+                    //     speed: 0.2,
+                    //     curve: 1,
+                    //     easing(t) {
+                    //         return t;
+                    //     }
+                    // });
                 })
 
                 
@@ -289,7 +307,8 @@ const mapDispatchToProps = {
     mousemove,
     layersFinishLoading,
     loadLayers,
-    hoverCountry
+    hoverCountry,
+    focusOnCountry
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Map);
