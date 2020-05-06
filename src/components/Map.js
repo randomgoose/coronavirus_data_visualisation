@@ -10,6 +10,7 @@ import eventsData from "../data/events.json"
 import { centerOfMass, polygon } from '@turf/turf'
 
 
+
 mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
 let percentage = 0;
 
@@ -109,7 +110,7 @@ class Map extends React.Component {
                             .setHTML('<h3>' + "YES" + '</h3><p>' + "YES" + '</p>'))
                         .addTo(this.map)
                     }
-                    
+
                     if (feature.properties.ADMIN === "China") {
                         console.log("CHINA", feature.properties.LNGLAT)
                     }
@@ -140,7 +141,7 @@ class Map extends React.Component {
                             "case",
                             ["boolean", ["feature-state", "hover"], false],
                             .1,
-                            1
+                            0
                         ]
                     }
                 }, 'settlement-label')
@@ -221,10 +222,10 @@ class Map extends React.Component {
 
                 this.map.on("click", 'countries-fill', (e) => {
                     if (e.features.length > 0) {
-                        if (this.props.focusedCountry.id >= 0) {
+                        if (this.props.focusedCountryId >= 0) {
                             this.map.setFeatureState({
                                 source: 'countries',
-                                id: this.props.focusedCountry.id
+                                id: this.props.focusedCountryId
                             }, {focused: false})
                         }
 
@@ -235,19 +236,19 @@ class Map extends React.Component {
 
                         this.map.setFeatureState({
                             source: 'countries',
-                            id: this.props.focusedCountry.id
+                            id: this.props.focusedCountryId
                         }, {focused: true})
                     }
-                    // console.log(e.features)
-                    // this.map.flyTo({
-                    //     center: [e.lngLat.wrap().lng, e.lngLat.wrap().lat],
-                    //     zoom: 9,
-                    //     speed: 0.2,
-                    //     curve: 1,
-                    //     easing(t) {
-                    //         return t;
-                    //     }
-                    // });
+
+                    this.map.flyTo({
+                        center: [this.props.focusedCountryCoordinates.split(/[,\[\]]/)[1], this.props.focusedCountryCoordinates.split(/[,\[\]]/)[2]],
+                        zoom: 10,
+                        speed: 1,
+                        curve: 1,
+                        easing(t) {
+                            return t;
+                        }
+                    });
                 })
 
                 

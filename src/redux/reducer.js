@@ -11,7 +11,10 @@ const intialState = {
     date: "2020-01-22",
     layersLoaded: false,
     progress: "",
-    focusedCountry: {}
+    focusedCountryId: "",
+    focusedCountryName: "",
+    focusedCountryCode: "",
+    focusedCountryCoordinates: ""
 }
 
 export function reducer(state=intialState, action) {
@@ -58,9 +61,13 @@ export function reducer(state=intialState, action) {
                 progress: action.progress
             }
         case "FOCUS_ON_COUNTRY":
+            console.log(action.focusedCountryCode)
             return {
                 ...state,
-                focusedCountry: action.focusedCountry
+                focusedCountryId: action.focusedCountryId,
+                focusedCountryName: action.focusedCountryName,
+                focusedCountryCoordinates: action.focusedCountryCoordinates,
+                focusedCountryCode: action.focusedCountryCode
             }
         default:
             return state
