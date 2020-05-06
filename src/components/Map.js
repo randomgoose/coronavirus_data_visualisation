@@ -29,14 +29,14 @@ class Map extends React.Component {
     mapRef = React.createRef()
 
     componentDidUpdate() {
-        virusDataWorld.forEach(i => {
-            const country = geoDataWorld.features.find(feature => feature.properties.ISO_A3 === i.country_code)
-            if (country) {
-                i.timeline.forEach(date => {
-                    country.properties[`${date.date}`] = date.confirmed - date.deaths - date.recovered
-                })
-            }
-        })
+        // virusDataWorld.forEach(i => {
+        //     const country = geoDataWorld.features.find(feature => feature.properties.ISO_A3 === i.country_code)
+        //     if (country) {
+        //         i.timeline.forEach(date => {
+        //             country.properties[`${date.date}`] = date.confirmed - date.deaths - date.recovered
+        //         })
+        //     }
+        // })
 
         virusDataWorld[0].timeline.forEach(date => {
             this.map.setPaintProperty(date.date, 'fill-opacity', 0)
@@ -56,6 +56,15 @@ class Map extends React.Component {
             pitch: 0,
             antialias: true
         });
+
+        virusDataWorld.forEach(i => {
+            const country = geoDataWorld.features.find(feature => feature.properties.ISO_A3 === i.country_code)
+            if (country) {
+                i.timeline.forEach(date => {
+                    country.properties[`${date.date}`] = date.confirmed - date.deaths - date.recovered
+                })
+            }
+        })
 
         this.map.on("load", () => {
                 this.map.addSource("provinces", {

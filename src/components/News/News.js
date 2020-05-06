@@ -14,11 +14,17 @@ class News extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-
+        const countryCode = this.props.focusedCountryCode ? alpha3ToAlpha2(this.props.focusedCountryCode) : "gb"
+        console.log(countryCode)
+        const url = "https://newsapi.org/v2/top-headlines?q=coronavirus&apiKey=57f93d392c59452fa5341a4dc1d1c29d" + "&country=" + countryCode
+        fetch(url)
+            .then(res => res.json())
+            .then(data => this.setState({
+                data
+            }))
     }
 
     componentDidMount() {
-
         const countryCode = this.props.focusedCountryCode ? alpha3ToAlpha2(this.props.focusedCountryCode) : "gb"
         console.log(countryCode)
         const url = "https://newsapi.org/v2/top-headlines?q=coronavirus&apiKey=57f93d392c59452fa5341a4dc1d1c29d" + "&country=" + countryCode
