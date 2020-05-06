@@ -1,15 +1,21 @@
 import React from 'react';
 import mapboxgl from 'mapbox-gl';
 // import geoDataChina from '../data/china-province.geojson'
-import {mousemove, layersFinishLoading, loadLayers, hoverCountry, focusOnCountry, fetchNews} from '../redux/action-creators'
+import {
+    mousemove,
+    layersFinishLoading,
+    loadLayers,
+    hoverCountry,
+    focusOnCountry,
+    fetchNews
+} from '../redux/action-creators'
 import {connect} from 'react-redux'
 import geoDataChina from "../data/china-province.json"
 import geoDataWorld from "../data/countries.json"
 import virusDataWorld from "../data/world_timeline.json"
 import eventsData from "../data/events.json"
-import { centerOfMass, polygon } from '@turf/turf'
+import {centerOfMass, polygon} from '@turf/turf'
 import {alpha3ToAlpha2} from 'i18n-iso-countries'
-
 
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
@@ -45,7 +51,7 @@ class Map extends React.Component {
         })
 
         this.map.setPaintProperty(this.props.date, 'fill-opacity', 1)
-        
+
     }
 
     componentDidMount() {
@@ -63,6 +69,9 @@ class Map extends React.Component {
             if (country) {
                 i.timeline.forEach(date => {
                     country.properties[`${date.date}`] = date.confirmed - date.deaths - date.recovered
+                    if(country.properties.ADMIN === "China") {
+                        console.log(country.properties)
+                    }
                 })
             }
         })
@@ -79,17 +88,22 @@ class Map extends React.Component {
                     generateId: true
                 })
 
-            // this.map.addLayer({
-            //         "id": "country-extrusion",
-            //         "type": "fill-extrusion",
-            //         "source": "countries",
-            //         "paint": {
-            //             "fill-extrusion-height": 160000,
-            //             "fill-extrusion-base": 0,
-            //             "fill-extrusion-color": "grey",
-            //             'fill-extrusion-opacity': 1
-            //         }
-            //     })
+                // this.map.addLayer({
+                //     "id": "country-extrusion",
+                //     "type": "fill-extrusion",
+                //     "source": "countries",
+                //     "paint": {
+                //         "fill-extrusion-height": [
+                //             "case",
+                //             ["boolean", ["feature-state", "focused"], false],
+                //             160000,
+                //             0
+                //         ],
+                //         "fill-extrusion-base": 0,
+                //         "fill-extrusion-color": "white",
+                //         'fill-extrusion-opacity': .5
+                //     }
+                // })
 
                 virusDataWorld[0].timeline.forEach(date => {
                     this.map.addLayer({
@@ -104,7 +118,7 @@ class Map extends React.Component {
 
                     this.setFill(date.date, date.date)
                 })
-                
+
 
                 geoDataWorld.features.forEach(feature => {
                     if (feature.geometry.type === "Polygon") {
@@ -112,14 +126,14 @@ class Map extends React.Component {
                     } else if (feature.geometry.type === "MultiPolygon") {
                         feature.properties.LNGLAT = centerOfMass(polygon(feature.geometry.coordinates[0])).geometry.coordinates
                     }
-                    
-                    if (feature.properties.LNGLAT) {
-                        const marker = new mapboxgl.Marker()
-                        .setLngLat(feature.properties.LNGLAT)
-                        .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-                            .setHTML('<h3>' + "YES" + '</h3><p>' + "YES" + '</p>'))
-                        .addTo(this.map)
-                    }
+
+                    // if (feature.properties.LNGLAT) {
+                    //     const marker = new mapboxgl.Marker()
+                    //         .setLngLat(feature.properties.LNGLAT)
+                    //         .setPopup(new mapboxgl.Popup({offset: 25}) // add popups
+                    //             .setHTML('<h3>' + "YES" + '</h3><p>' + "YES" + '</p>'))
+                    //         .addTo(this.map)
+                    // }
 
                     if (feature.properties.ADMIN === "China") {
                         console.log("CHINA", feature.properties.LNGLAT)
@@ -131,8 +145,18 @@ class Map extends React.Component {
                     type: "line",
                     source: "countries",
                     paint: {
-                        "line-color": "#666666",
-                        "line-width": 0.1
+                        "line-color": [
+                            "case",
+                            ["boolean", ["feature-state", "focused"], false],
+                            "#ffe400",
+                            "#333333"
+                        ],
+                        "line-width": [
+                            "case",
+                            ["boolean", ["feature-state", "focused"], false],
+                            1,
+                            .1
+                        ]
                     }
                 })
 
@@ -224,6 +248,14 @@ class Map extends React.Component {
                 //
                 this.map.addControl(new mapboxgl.FullscreenControl());
                 this.map.addControl(new mapboxgl.NavigationControl());
+                this.map.addControl(
+                    new mapboxgl.GeolocateControl({
+                        positionOptions: {
+                            enableHighAccuracy: true
+                        },
+                        trackUserLocation: true
+                    })
+                );
                 this.map.getSource('countries').setData(geoDataWorld);
 
                 this.map.on("idle", (e) => {
@@ -240,9 +272,9 @@ class Map extends React.Component {
                         }
 
                         this.props.focusOnCountry(e.features[0].id,
-                                            e.features[0].properties.ISO_A3,
-                                            e.features[0].properties.ADMIN,
-                                            e.features[0].properties.LNGLAT)
+                            e.features[0].properties.ISO_A3,
+                            e.features[0].properties.ADMIN,
+                            e.features[0].properties.LNGLAT)
 
                         this.props.fetchNews(alpha3ToAlpha2(this.props.focusedCountryCode))
 
@@ -254,16 +286,15 @@ class Map extends React.Component {
 
                     this.map.flyTo({
                         center: [this.props.focusedCountryCoordinates.split(/[,\[\]]/)[1], this.props.focusedCountryCoordinates.split(/[,\[\]]/)[2]],
-                        zoom: 10,
+                        zoom: 5,
                         speed: 1,
                         curve: 1,
+                        pitch: 60,
                         easing(t) {
                             return t;
                         }
                     });
                 })
-
-                
 
 
                 // this.map.on("data", () => {
@@ -287,25 +318,26 @@ class Map extends React.Component {
     render() {
 
         const renderLegendKeys = (stop, i) => {
-                return (
-                  <div key={i} className='txt-s'>
-                    <span className='mr6 round-full w12 h12 inline-block align-middle' style={{ backgroundColor: stop[1] }} />
+            return (
+                <div key={i} className='txt-s'>
+                    <span className='mr6 round-full w12 h12 inline-block align-middle'
+                          style={{backgroundColor: stop[1]}}/>
                     <span>{`${stop[0].toLocaleString()}`}</span>
-                  </div>
-                );
-              }
-
-              
-        return (
-                <>
-            <div className="Map">
-                <div className="absolute top right left bottom" ref={this.mapRef}></div>
-            </div>
-            <div className="bg-white absolute bottom right mr12 mb24 py12 px12 shadow-darken10 round z1 wmax180">
-                <div className='mb6'>
-                <h2 className="txt-bold txt-s block">图例</h2>
                 </div>
-                {stops.map(renderLegendKeys)}
+            );
+        }
+
+
+        return (
+            <>
+                <div className="Map">
+                    <div className="absolute top right left bottom" ref={this.mapRef}></div>
+                </div>
+                <div className="bg-white absolute bottom right mr12 mb24 py12 px12 shadow-darken10 round z1 wmax180">
+                    <div className='mb6'>
+                        <h2 className="txt-bold txt-s block">图例</h2>
+                    </div>
+                    {stops.map(renderLegendKeys)}
                 </div>
             </>
         );

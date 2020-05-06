@@ -36,8 +36,8 @@ export default class Chart extends PureComponent {
       // <ResponsiveContainer width={700} height="80%">
         <div className={"Chart"}>
           <LineChart
-            width={600}
-            height={300}
+            width={400}
+            height={200}
             data={data}
             margin={{
               top: 5, bottom: 5, left: 5, right: 5

@@ -1,5 +1,6 @@
 .Sidebar__nav {
-  height: 100vh;
+  height: 94vh;
+  top: 6vh;
   background: $color-grey-light-2;
   position: relative;
   z-index: 1000;
@@ -60,7 +61,8 @@
 
 .Sidebar__panel {
   width: auto;
-  height: 100vh;
+  height: 94vh;
+  top: 6vh;
   background: $color-white;
   position: relative;
   float: left;

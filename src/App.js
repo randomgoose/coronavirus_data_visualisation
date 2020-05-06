@@ -11,6 +11,7 @@ import virusDataChina from './data/china_timeline'
 import virusDataWorld from './data/world_timeline'
 import ProgressAnimation from "./components/ProgressAnimation";
 import Sidebar from "./components/Sidebar/Sidebar";
+import Header from "./components/Header";
 
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
@@ -27,6 +28,7 @@ class App extends React.Component {
         return (
             <>
                 { this.props.layersLoaded ? null : <ProgressAnimation fs={true}/>}
+                <Header />
                 <Sidebar />
                 {/*<Dashboard date={this.props.date}/>*/}
                 {/* <Slider defaultValue={30} /> */}

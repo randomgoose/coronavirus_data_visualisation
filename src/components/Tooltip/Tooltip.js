@@ -22,6 +22,9 @@ class Tooltip extends React.Component {
     diffRecovered = 0
 
     render() {
+        // console.log(this.tooltipRef.current ? this.tooltipRef.current.style.width : null)
+        console.log(this.props.coordinates ? this.props.coordinates[1] : 0, window.innerHeight)
+
         if (this.props.hoveredCountryId) {
             const hoveredCountry = this.props.data.find(country => country.country_code === this.props.hoveredCountryCode)
             if (hoveredCountry) {
@@ -39,13 +42,15 @@ class Tooltip extends React.Component {
         }
 
         return (
-            
+
             <div ref={this.tooltipRef} className="Tooltip" style={{
                 "top": this.props.coordinates ? this.props.coordinates[1] + "px" : 0,
                 "left": this.props.coordinates ? this.props.coordinates[0] + "px" : 0,
-                "display": this.props.coordinates ? "flex" : "none"
+                "display": this.props.coordinates ? "flex" : "none",
+                "transform": !this.props.coordinates ? "none" : this.props.coordinates[1] >= window.innerHeight * 0.5 ? "translate(-50%, -110%)" : "translate(-50%, 10%)"
             }}>
                 <span className="Tooltip__title">{this.props.hoveredCountryName}</span>
+                <span className="Tooltip__date">{this.props.date}</span>
 
                 <Chart data={this.hoveredCountryTimeline ? this.hoveredCountryTimeline : []}/>
 
