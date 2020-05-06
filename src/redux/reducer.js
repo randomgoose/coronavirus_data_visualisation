@@ -8,6 +8,7 @@ const intialState = {
     hoveredCountryName: null,
     data_china: {},
     data_world: {},
+    news: {},
     date: "2020-01-22",
     layersLoaded: false,
     progress: "",
@@ -68,6 +69,11 @@ export function reducer(state=intialState, action) {
                 focusedCountryName: action.focusedCountryName,
                 focusedCountryCoordinates: action.focusedCountryCoordinates,
                 focusedCountryCode: action.focusedCountryCode
+            }
+        case "FETCH_NEWS":
+            return {
+                ...state,
+                news: action.news
             }
         default:
             return state

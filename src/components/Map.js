@@ -1,13 +1,14 @@
 import React from 'react';
 import mapboxgl from 'mapbox-gl';
 // import geoDataChina from '../data/china-province.geojson'
-import {mousemove, layersFinishLoading, loadLayers, hoverCountry, focusOnCountry} from '../redux/action-creators'
+import {mousemove, layersFinishLoading, loadLayers, hoverCountry, focusOnCountry, fetchNews} from '../redux/action-creators'
 import {connect} from 'react-redux'
 import geoDataChina from "../data/china-province.json"
 import geoDataWorld from "../data/countries.json"
 import virusDataWorld from "../data/world_timeline.json"
 import eventsData from "../data/events.json"
 import { centerOfMass, polygon } from '@turf/turf'
+import {alpha3ToAlpha2} from 'i18n-iso-countries'
 
 
 
@@ -243,6 +244,8 @@ class Map extends React.Component {
                                             e.features[0].properties.ADMIN,
                                             e.features[0].properties.LNGLAT)
 
+                        this.props.fetchNews(alpha3ToAlpha2(this.props.focusedCountryCode))
+
                         this.map.setFeatureState({
                             source: 'countries',
                             id: this.props.focusedCountryId
@@ -318,7 +321,8 @@ const mapDispatchToProps = {
     layersFinishLoading,
     loadLayers,
     hoverCountry,
-    focusOnCountry
+    focusOnCountry,
+    fetchNews
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Map);

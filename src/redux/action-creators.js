@@ -41,6 +41,20 @@ export function fetchAllData() {
     }
 }
 
+export function fetchNews(countryCode) {
+    return (dispatch, getState) => {
+        const url = "https://newsapi.org/v2/top-headlines?q=coronavirus&apiKey=57f93d392c59452fa5341a4dc1d1c29d" + "&country=" + countryCode
+        fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            dispatch({
+                type: "FETCH_NEWS",
+                news: data
+            })
+        })
+    }
+}
+
 export function changeDate(newDate, value) {
     return {
         type: "CHANGE_DATE",
