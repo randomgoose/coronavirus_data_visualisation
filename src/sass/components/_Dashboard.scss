@@ -1,5 +1,5 @@
 .Dashboard {
-    width: 64rem;
+    // width: 64rem;
     // height: 30rem;
     z-index: 999;
     background-color: #fff;
@@ -17,7 +17,7 @@
 
         &:first-child {
             display: flex;
-            font-size: 2.4rem;
+            font-size: 1.6rem;
         }
 
         & h1 {
@@ -32,7 +32,7 @@
 
     &__subtitle {
         text-align: left;
-        padding: 2.4rem;
+        padding: 1.6rem;
         font-size: 1.8rem;
         font-weight: bold;
     }
@@ -41,7 +41,8 @@
         height: 100%;
         display: grid;
         grid-template-columns: calc(100% / 3) calc(100% / 3) calc(100% / 3);
-        margin: 2.4rem;
+        // margin: 1.6rem;
+        margin-bottom: 1.6rem;
 
         & .Data {
             flex: 0 0 25%;
