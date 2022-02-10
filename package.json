@@ -14,7 +14,7 @@
     "geojson": "^0.5.0",
     "i18n-iso-countries": "^5.3.0",
     "mapbox-gl": "^1.9.1",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-mapbox-gl": "^4.8.3",
